@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="BurnBox - Chat anônimo e seguro com mensagens autodestrutivas. Suas conversas desaparecem após serem lidas.">
+    <meta name="description" content="BurnBox - Chat anônimo e seguro com mensagens autodestrutivas">
     <title>BurnBox - Chat Privado e Anônimo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -23,7 +23,6 @@
             --cor-perigo: #cc3333;
             --cor-alerta: #FF6A00;
             --sombra: 0 2px 8px rgba(0, 0, 0, 0.9);
-            --sombra-leve: 0 1px 3px rgba(0, 0, 0, 0.8);
         }
 
         * {
@@ -31,7 +30,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
-            font-size: 12px;
         }
 
         body {
@@ -40,8 +38,6 @@
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
         .container {
@@ -49,9 +45,6 @@
             margin: 0 auto;
             padding: 10px;
             width: 100%;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
 
         header {
@@ -61,37 +54,42 @@
             padding: 12px 0;
             border-bottom: 1px solid var(--cor-borda);
             margin-bottom: 15px;
-            position: relative;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .header-center {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+        .logo {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-weight: 700;
+            color: var(--cor-destaque-primaria);
+            font-size: 1.2rem;
         }
 
-        .header-right {
+        .perfil-usuario {
             display: flex;
+            flex-direction: column;
             align-items: center;
+            text-align: center;
+        }
+
+        .nome-usuario {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .contador-online {
+            font-size: 0.7rem;
+            color: var(--cor-texto-secundaria);
         }
 
         .menu-hamburguer {
             background: none;
             border: none;
             color: var(--cor-texto-primaria);
-            font-size: 1rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            padding: 6px;
-            border-radius: 3px;
-            transition: all 0.2s;
+            padding: 8px;
+            border-radius: 4px;
         }
 
         .menu-hamburguer:hover {
@@ -100,13 +98,13 @@
 
         .menu-dropdown {
             position: absolute;
-            top: 100%;
-            right: 0;
+            top: 60px;
+            right: 10px;
             background-color: var(--cor-fundo-secundaria);
             border: 1px solid var(--cor-borda);
             border-radius: 5px;
-            padding: 6px 0;
-            min-width: 160px;
+            padding: 8px 0;
+            min-width: 180px;
             box-shadow: var(--sombra);
             z-index: 1000;
             display: none;
@@ -118,65 +116,283 @@
 
         .menu-item {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px 15px;
             background: none;
             border: none;
             color: var(--cor-texto-primaria);
             text-align: left;
             cursor: pointer;
-            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
+            gap: 8px;
+            font-size: 0.9rem;
         }
 
         .menu-item:hover {
             background-color: var(--cor-fundo-terciaria);
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 700;
-            color: var(--cor-destaque-primaria);
-        }
-
-        .logo-icone {
-            color: var(--cor-destaque-primaria);
-            font-size: 1.2rem;
-        }
-
-        .barra-status {
-            display: flex;
-            gap: 10px;
-            font-size: 0.75rem;
-            color: var(--cor-texto-secundaria);
-        }
-
-        .item-status {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .icone-status {
-            color: var(--cor-destaque-primaria);
-            font-size: 0.7rem;
-        }
-
         .tela {
             display: none;
-            flex: 1;
-            flex-direction: column;
         }
 
         .tela.ativa {
-            display: flex;
+            display: block;
         }
 
-        /* Estilos de Modal */
+        .btn {
+            padding: 10px 15px;
+            background-color: var(--cor-fundo-terciaria);
+            border: 1px solid var(--cor-borda);
+            color: var(--cor-texto-primaria);
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--cor-destaque-primaria);
+            color: var(--cor-fundo-primaria);
+        }
+
+        .btn-primario {
+            background-color: var(--cor-destaque-primaria);
+            color: var(--cor-fundo-primaria);
+        }
+
+        .btn-perigo {
+            background-color: var(--cor-perigo);
+            color: white;
+        }
+
+        .btn-perigo:hover {
+            background-color: #b32b2b;
+        }
+
+        .btn-voltar {
+            background: none;
+            border: none;
+            color: var(--cor-texto-primaria);
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-voltar:hover {
+            color: var(--cor-destaque-primaria);
+        }
+
+        .lista-salas {
+            list-style: none;
+        }
+
+        .item-sala {
+            background-color: var(--cor-fundo-secundaria);
+            border: 1px solid var(--cor-borda);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .item-sala:hover {
+            border-color: var(--cor-destaque-primaria);
+            transform: translateY(-2px);
+        }
+
+        .cabecalho-sala {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .nome-sala {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .badge-sala {
+            background-color: var(--cor-destaque-primaria);
+            color: var(--cor-fundo-primaria);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .info-sala {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--cor-texto-secundaria);
+            margin-bottom: 5px;
+        }
+
+        .preview-sala {
+            font-size: 0.8rem;
+            color: var(--cor-texto-primaria);
+            opacity: 0.9;
+        }
+
+        .barra-cabecalho-chat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--cor-borda);
+        }
+
+        .barra-queima {
+            height: 4px;
+            background: linear-gradient(90deg, var(--cor-destaque-primaria), var(--cor-destaque-terciaria));
+            border-radius: 2px;
+            transition: width 1s linear;
+            margin-bottom: 10px;
+        }
+
+        .titulo-chat {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .temporizador-chat {
+            font-size: 0.8rem;
+            color: var(--cor-texto-secundaria);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .container-mensagens {
+            height: 65vh;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid var(--cor-borda);
+            border-radius: 8px;
+            margin-bottom: 70px;
+            background-color: var(--cor-fundo-secundaria);
+        }
+
+        .mensagem {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 85%;
+            animation: aparecer 0.3s ease;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mensagem.propria {
+            margin-left: auto;
+            background-color: rgba(255, 69, 0, 0.15);
+            border-left: 3px solid var(--cor-destaque-primaria);
+        }
+
+        .mensagem.outra {
+            background-color: var(--cor-fundo-terciaria);
+            border-right: 3px solid var(--cor-borda);
+        }
+
+        .mensagem-sistema {
+            background-color: rgba(255, 106, 0, 0.1);
+            border-left: 3px solid var(--cor-alerta);
+            max-width: 90%;
+            margin: 10px auto;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .remetente-mensagem {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            color: var(--cor-destaque-primaria);
+        }
+
+        .texto-mensagem {
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .tempo-mensagem {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .indicador-digitacao {
+            padding: 8px 12px;
+            font-style: italic;
+            color: var(--cor-texto-secundaria);
+            display: none;
+            font-size: 0.8rem;
+        }
+
+        .indicador-digitacao.ativa {
+            display: block;
+            animation: pulsar 1.5s infinite;
+        }
+
+        @keyframes pulsar {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .area-entrada {
+            display: flex;
+            gap: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background-color: var(--cor-fundo-secundaria);
+            border-top: 1px solid var(--cor-borda);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .area-entrada input {
+            flex: 1;
+            padding: 12px;
+            background-color: var(--cor-fundo-terciaria);
+            border: 1px solid var(--cor-borda);
+            color: var(--cor-texto-primaria);
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .area-entrada input:focus {
+            outline: none;
+            border-color: var(--cor-destaque-primaria);
+        }
+
+        .area-entrada button {
+            padding: 12px 15px;
+            background-color: var(--cor-destaque-primaria);
+            border: none;
+            color: var(--cor-fundo-primaria);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .modal {
             position: fixed;
             top: 0;
@@ -188,18 +404,21 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 15px;
+            padding: 20px;
+        }
+
+        .modal.ativo {
+            display: flex;
         }
 
         .conteudo-modal {
             background-color: var(--cor-fundo-secundaria);
             border: 1px solid var(--cor-borda);
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 20px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             box-shadow: var(--sombra);
-            position: relative;
         }
 
         .cabecalho-modal {
@@ -218,399 +437,28 @@
             background: none;
             border: none;
             color: var(--cor-texto-secundaria);
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .fechar-modal:hover {
-            color: var(--cor-texto-primaria);
-        }
-
-        .corpo-modal {
-            margin-bottom: 15px;
-        }
-
-        .rodape-modal {
-            display: flex;
-            gap: 8px;
-        }
-
-        /* Tela de Lista de Salas */
-        .cabecalho-tela {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .titulo-tela {
             font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .botoes-acao {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn {
-            padding: 6px 10px;
-            background-color: var(--cor-fundo-terciaria);
-            border: 1px solid var(--cor-borda);
-            color: var(--cor-texto-primaria);
-            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.75rem;
         }
 
-        .btn:hover {
-            background-color: var(--cor-destaque-primaria);
-            color: var(--cor-fundo-primaria);
-        }
-
-        .btn-primario {
-            background-color: var(--cor-destaque-primaria);
-            color: var(--cor-fundo-primaria);
-        }
-
-        .btn-primario:hover {
-            background-color: var(--cor-destaque-secundaria);
-        }
-
-        .btn-perigo {
-            background-color: var(--cor-perigo);
-            color: white;
-        }
-
-        .btn-perigo:hover {
-            background-color: #b32b2b;
-        }
-
-        .btn-voltar {
-            background: none;
-            border: none;
-            color: var(--cor-texto-primaria);
-            padding: 5px 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.75rem;
-        }
-
-        .btn-voltar:hover {
-            color: var(--cor-destaque-primaria);
-        }
-
-        .lista-salas {
-            list-style: none;
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 12px;
-        }
-
-        .item-sala {
-            background-color: var(--cor-fundo-secundaria);
-            border: 1px solid var(--cor-borda);
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .item-sala:hover {
-            border-color: var(--cor-destaque-primaria);
-            transform: translateY(-1px);
-            box-shadow: var(--sombra-leve);
-        }
-
-        .cabecalho-sala {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-
-        .nome-sala {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .badge-sala {
-            background-color: var(--cor-destaque-primaria);
-            color: var(--cor-fundo-primaria);
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .info-sala {
-            display: flex;
-            gap: 8px;
-            font-size: 0.7rem;
-            color: var(--cor-texto-secundaria);
-            margin-bottom: 3px;
-        }
-
-        .preview-sala {
-            font-size: 0.7rem;
-            color: var(--cor-texto-primaria);
-            opacity: 0.9;
-        }
-
-        /* Tela de Chat - Header Redesenhado */
-        .barra-cabecalho-chat {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 10px;
-            background-color: var(--cor-fundo-secundaria);
-            border-bottom: 1px solid var(--cor-borda);
-            z-index: 1000;
-            box-shadow: var(--sombra-leve);
-            position: sticky;
-            top: 0;
-        }
-
-        .barra-cabecalho-chat .conteudo-central {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            flex: 1;
-            padding: 0 10px;
-        }
-
-        .barra-queima {
-            height: 3px;
-            background: linear-gradient(90deg, var(--cor-destaque-primaria), var(--cor-destaque-terciaria));
-            border-radius: 0 0 2px 2px;
-            transition: width 1s linear;
-            z-index: 10;
-            box-shadow: 0 0 3px rgba(255, 69, 0, 0.5);
-        }
-
-        .barra-queima-container {
-            width: 100%;
-            height: 3px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 0 0 2px 2px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .titulo-chat {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .temporizador-chat {
-            font-size: 0.7rem;
-            color: var(--cor-texto-secundaria);
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .icone-temporizador {
-            color: var(--cor-alerta);
-            font-size: 0.65rem;
-        }
-
-        .acoes-chat {
-            display: flex;
-            gap: 5px;
-        }
-
-        .btn-acao-chat {
-            background: none;
-            border: none;
-            color: var(--cor-texto-secundaria);
-            font-size: 0.8rem;
-            cursor: pointer;
-            padding: 4px 6px;
-            border-radius: 3px;
-            transition: all 0.2s;
-        }
-
-        .btn-acao-chat:hover {
-            color: var(--cor-texto-primaria);
-            background-color: var(--cor-fundo-terciaria);
-        }
-
-        .btn-acao-chat.perigo:hover {
-            color: var(--cor-perigo);
-        }
-
-        .container-mensagens {
-            flex: 1;
-            overflow-y: auto;
-            padding: 5px;
-            border: 1px solid var(--cor-borda);
-            border-radius: 4px;
-            margin-bottom: 60px;
-            margin-top: 0;
-            max-height: calc(100vh - 130px);
-            background-color: var(--cor-fundo-secundaria);
-            -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
-        }
-
-        .mensagem {
-            margin-bottom: 6px;
-            padding: 6px;
-            border-radius: 4px;
-            max-width: 85%;
-            animation: aparecer 0.2s ease;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .mensagem.propria {
-            margin-left: auto;
-            background-color: rgba(255, 69, 0, 0.1);
-            border-left: 2px solid var(--cor-destaque-primaria);
-        }
-
-        .mensagem.outra {
-            background-color: var(--cor-fundo-terciaria);
-            border-right: 2px solid var(--cor-borda);
-        }
-
-        .mensagem-sistema {
-            background-color: rgba(255, 106, 0, 0.08);
-            border-left: 2px solid var(--cor-alerta);
-            max-width: 90%;
-            margin: 6px auto;
-            text-align: center;
-        }
-
-        .remetente-mensagem {
-            font-weight: 600;
-            margin-bottom: 2px;
-            font-size: 0.7rem;
-            color: var(--cor-destaque-primaria);
-        }
-
-        .texto-mensagem {
-            word-wrap: break-word;
-            line-height: 1.3;
-            font-size: 0.8rem;
-        }
-
-        .tempo-mensagem {
-            font-size: 0.55rem;
-            opacity: 0.7;
-            text-align: right;
-            margin-top: 2px;
-        }
-
-        .indicador-digitacao {
-            padding: 4px 8px;
-            font-style: italic;
-            color: var(--cor-texto-secundaria);
-            display: none;
-            font-size: 0.7rem;
-        }
-
-        .indicador-digitacao.ativa {
-            display: block;
-            animation: pulsar 1.5s infinite;
-        }
-
-        @keyframes pulsar {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-
-        .area-entrada {
-            display: flex;
-            gap: 5px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 8px 10px;
-            background-color: var(--cor-fundo-secundaria);
-            border-top: 1px solid var(--cor-borda);
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-        }
-
-        .area-entrada input {
-            flex: 1;
-            padding: 6px 8px;
-            background-color: var(--cor-fundo-terciaria);
-            border: 1px solid var(--cor-borda);
-            color: var(--cor-texto-primaria);
-            border-radius: 3px;
-            font-size: 0.75rem;
-        }
-
-        .area-entrada input:focus {
-            outline: none;
-            border-color: var(--cor-destaque-primaria);
-        }
-
-        .area-entrada button {
-            padding: 6px 10px;
-            background-color: var(--cor-destaque-primaria);
-            border: none;
-            color: var(--cor-fundo-primaria);
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.75rem;
-        }
-
-        .area-entrada button:hover {
-            background-color: var(--cor-destaque-secundaria);
-        }
-
-        .area-entrada button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .area-entrada button:disabled:hover {
-            background-color: var(--cor-destaque-primaria);
-        }
-
-        /* Elementos de Formulário */
         .grupo-form {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .rotulo-form {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 500;
-            font-size: 0.8rem;
         }
 
         .controle-form {
             width: 100%;
-            padding: 8px;
+            padding: 12px;
             background-color: var(--cor-fundo-terciaria);
             border: 1px solid var(--cor-borda);
             color: var(--cor-texto-primaria);
-            border-radius: 4px;
-            font-size: 0.8rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
         }
 
         .controle-form:focus {
@@ -619,18 +467,19 @@
         }
 
         .texto-form {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--cor-texto-secundaria);
-            margin-top: 4px;
+            margin-top: 5px;
         }
 
-        /* Badges */
         .badge {
             display: inline-block;
-            padding: 2px 6px;
-            border-radius: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
             font-size: 0.7rem;
             font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 5px;
         }
 
         .badge-primario {
@@ -643,260 +492,44 @@
             color: var(--cor-texto-primaria);
         }
 
-        /* Perfil do Usuário */
-        .perfil-usuario {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            text-align: center;
-        }
-
-        .nome-usuario {
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: var(--cor-texto-primaria);
-        }
-
-        .contador-online {
-            font-size: 0.65rem;
-            color: var(--cor-texto-secundaria);
-        }
-
-        /* Estado Vazio */
         .estado-vazio {
             text-align: center;
-            padding: 30px 15px;
+            padding: 40px 20px;
             color: var(--cor-texto-secundaria);
         }
 
         .icone-vazio {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
+            font-size: 3rem;
+            margin-bottom: 15px;
             color: var(--cor-borda);
         }
 
-        /* Responsivo */
         @media (max-width: 600px) {
             .container {
                 padding: 8px;
             }
-
-            .barra-status {
-                flex-direction: column;
-                gap: 3px;
-                align-items: flex-end;
-            }
-
-            .mensagem {
-                max-width: 95%;
-            }
-
-            .botoes-acao {
-                flex-direction: column;
-            }
-
-            .barra-cabecalho-chat {
-                flex-direction: row;
-                align-items: center;
-                gap: 5px;
-            }
-
-            .conteudo-modal {
-                padding: 12px;
-            }
             
-            .btn-voltar span {
-                display: none;
-            }
-        }
-
-        /* Melhorias de responsividade para mobile */
-        @media (max-width: 480px) {
-            .container {
-                padding: 5px;
-            }
-            
-            header {
-                padding: 8px 0;
-                flex-wrap: wrap;
-            }
-            
-            .header-center {
-                position: static;
-                transform: none;
-                order: 3;
-                width: 100%;
-                margin-top: 8px;
-                justify-content: center;
-            }
-            
-            .barra-status {
-                flex-direction: row;
-                justify-content: center;
-                width: 100%;
-                margin-top: 5px;
-            }
-            
-            .logo span {
-                font-size: 1rem;
-            }
-            
-            .logo-icone {
-                font-size: 1.1rem;
-            }
-            
-            /* Modal em mobile */
-            .conteudo-modal {
-                margin: 10px;
-                padding: 15px;
-                width: calc(100% - 20px);
-            }
-            
-            /* Lista de salas em mobile */
-            .item-sala {
-                padding: 8px;
-                min-height: 60px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-            
-            .nome-sala {
-                font-size: 0.85rem;
-            }
-            
-            .info-sala, .preview-sala {
-                font-size: 0.65rem;
-            }
-            
-            /* Chat em mobile */
-            .barra-cabecalho-chat {
-                padding: 6px 8px;
-            }
-            
-            .titulo-chat {
-                font-size: 0.8rem;
-            }
-            
-            .temporizador-chat {
-                font-size: 0.65rem;
+            .menu-dropdown {
+                right: 8px;
+                min-width: 160px;
             }
             
             .container-mensagens {
-                margin-bottom: 70px;
-                max-height: calc(100vh - 140px);
+                height: 60vh;
+                margin-bottom: 80px;
             }
             
             .mensagem {
                 max-width: 90%;
-                padding: 5px;
             }
             
             .area-entrada {
-                padding: 10px 8px;
+                padding: 12px;
             }
             
-            .area-entrada input {
-                padding: 8px 10px;
-                font-size: 0.8rem;
+            .conteudo-modal {
+                padding: 15px;
             }
-            
-            .area-entrada button {
-                padding: 8px 12px;
-                min-width: 60px;
-            }
-            
-            /* Ajustes no menu dropdown */
-            .menu-dropdown {
-                min-width: 140px;
-                right: -10px;
-            }
-            
-            .menu-item {
-                padding: 10px 12px;
-                font-size: 0.8rem;
-            }
-            
-            /* Ajustes nos botões */
-            .btn {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-            }
-            
-            .btn-voltar span {
-                display: inline !important;
-            }
-
-            /* Splash screen em mobile */
-            #telaSplash .logo {
-                font-size: 1.5rem;
-            }
-            
-            #telaSplash .logo-icone {
-                font-size: 2rem;
-            }
-        }
-
-        /* Melhorias para tablets */
-        @media (min-width: 481px) and (max-width: 768px) {
-            .container {
-                padding: 8px;
-                max-width: 95%;
-            }
-            
-            .mensagem {
-                max-width: 80%;
-            }
-        }
-
-        /* Garantir que elementos críticos sejam sempre visíveis */
-        .barra-cabecalho-chat {
-            position: sticky;
-            top: 0;
-            background-color: var(--cor-fundo-secundaria);
-        }
-
-        .area-entrada {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-        }
-
-        /* Melhorar a área de toque para botões em mobile */
-        @media (max-width: 768px) {
-            .menu-hamburguer, 
-            .btn-acao-chat, 
-            .btn-voltar,
-            .btn {
-                min-height: 44px;
-                min-width: 44px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .item-sala {
-                min-height: 60px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-        }
-
-        /* Prevenir zoom em inputs em iOS */
-        @media (max-width: 768px) {
-            input, select, textarea {
-                font-size: 16px !important;
-            }
-        }
-
-        /* Melhorar scroll em mobile */
-        .container-mensagens, .lista-salas {
-            -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -904,26 +537,22 @@
     <!-- Tela de Splash -->
     <div id="telaSplash" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--cor-fundo-primaria); display: flex; justify-content: center; align-items: center; z-index: 2000;">
         <div class="logo" style="font-size: 2rem;">
-            <i class="fas fa-fire logo-icone" style="font-size: 3rem;"></i>
+            <i class="fas fa-fire" style="font-size: 2.5rem;"></i>
             <span>BurnBox</span>
         </div>
     </div>
 
     <div class="container">
         <header>
-            <div class="header-left">
-                <div class="logo">
-                    <i class="fas fa-fire logo-icone"></i>
-                    <span>BurnBox</span>
-                </div>
+            <div class="logo">
+                <i class="fas fa-fire"></i>
+                <span>BurnBox</span>
             </div>
-            <div class="header-center">
-                <div class="perfil-usuario" id="perfilUsuario">
-                    <div class="nome-usuario" id="apelidoUsuario">Anônimo</div>
-                    <div class="contador-online">Online: <span id="contadorOnline">28</span></div>
-                </div>
+            <div class="perfil-usuario">
+                <div class="nome-usuario" id="apelidoUsuario">BURN#0000A0#</div>
+                <div class="contador-online">Online: <span id="contadorOnline">0</span></div>
             </div>
-            <div class="header-right">
+            <div style="position: relative;">
                 <button class="menu-hamburguer" id="botaoMenu">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -934,11 +563,14 @@
                     <button class="menu-item" id="menuCriarSala">
                         <i class="fas fa-plus"></i> Criar Sala
                     </button>
+                    <button class="menu-item" id="menuExcluirConta">
+                        <i class="fas fa-trash"></i> Excluir Conta
+                    </button>
                 </div>
             </div>
         </header>
 
-        <!-- Modal de Perfil do Usuário -->
+        <!-- Modal Perfil Usuário -->
         <div class="modal" id="modalUsuario">
             <div class="conteudo-modal">
                 <div class="cabecalho-modal">
@@ -951,32 +583,35 @@
                     <div class="grupo-form">
                         <div class="rotulo-form">Seu ID Anônimo</div>
                         <div class="perfil-usuario">
-                            <div class="nome-usuario" id="apelidoModalUsuario">Anônimo</div>
-                            <div class="status-usuario">Gerado automaticamente</div>
+                            <div class="nome-usuario" id="apelidoModalUsuario">BURN#0000A0#</div>
+                            <div class="contador-online">Gerado automaticamente</div>
                         </div>
                         <div class="texto-form">
-                            Este ID é gerado aleatoriamente e não pode ser alterado.
-                            Para anonimato completo, delete sua conta para obter um novo ID.
+                            Este ID é único e anônimo. Para total privacidade, exclua sua conta para obter um novo ID.
                         </div>
                     </div>
                     <div class="grupo-form">
-                        <div class="rotulo-form">Seu Status de Privacidade</div>
+                        <div class="rotulo-form">Status de Segurança</div>
                         <div>
                             <span class="badge badge-primario">Totalmente Anônimo</span>
                             <span class="badge badge-secundario">Sem Rastreamento</span>
                             <span class="badge badge-secundario">Criptografado</span>
+                            <span class="badge badge-secundario">Auto-Destrutivo</span>
+                        </div>
+                        <div class="texto-form">
+                            Suas conversas são protegidas por criptografia e se autodestroem após o tempo configurado.
                         </div>
                     </div>
                 </div>
-                <div class="rodape-modal">
-                    <button class="btn btn-perigo" id="deletarConta">
-                        <i class="fas fa-trash"></i> Deletar Conta
+                <div class="rodape-modal" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn" id="fecharPerfil">
+                        <i class="fas fa-times"></i> Fechar
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Modal de Criar Sala -->
+        <!-- Modal Criar Sala -->
         <div class="modal" id="modalCriarSala">
             <div class="conteudo-modal">
                 <div class="cabecalho-modal">
@@ -988,32 +623,78 @@
                 <div class="corpo-modal">
                     <div class="grupo-form">
                         <div class="rotulo-form">Nome da Sala</div>
-                        <input type="text" class="controle-form" id="entradaNomeSala" value="Sala Anônima" readonly>
-                        <div class="texto-form">O nome da sala é gerado automaticamente para anonimato</div>
+                        <input type="text" class="controle-form" id="entradaNomeSala" value="BURN#CHAT0000" readonly>
+                        <div class="texto-form">Nome gerado automaticamente para anonimato</div>
                     </div>
                     <div class="grupo-form">
                         <div class="rotulo-form">Tempo de Auto-Destruição</div>
                         <select class="controle-form" id="selecionarTempoDestruicao">
-                            <option value="0.5">30 segundos</option>
                             <option value="1">1 minuto</option>
                             <option value="5">5 minutos</option>
                             <option value="30">30 minutos</option>
-                            <option value="60">1 hora</option>
-                            <option value="360" selected>6 horas</option>
+                            <option value="60" selected>1 hora</option>
+                            <option value="360">6 horas</option>
+                            <option value="1440">24 horas</option>
                             <option value="0">Infinito</option>
                         </select>
                         <div class="texto-form">Após este tempo de inatividade, a sala será automaticamente deletada</div>
                     </div>
                 </div>
-                <div class="rodape-modal">
-                    <button class="btn" id="cancelarCriarSala">Cancelar</button>
-                    <button class="btn btn-primario" id="confirmarCriarSala">Criar Sala</button>
+                <div class="rodape-modal" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn" id="cancelarCriarSala">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button class="btn btn-primario" id="confirmarCriarSala">
+                        <i class="fas fa-check"></i> Criar Sala
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Excluir Conta -->
+        <div class="modal" id="modalExcluirConta">
+            <div class="conteudo-modal">
+                <div class="cabecalho-modal">
+                    <h2 class="titulo-modal">Excluir Conta</h2>
+                    <button class="fechar-modal" id="fecharModalExcluirConta">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="corpo-modal">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--cor-perigo); margin-bottom: 15px;"></i>
+                        <h3 style="margin-bottom: 10px;">Confirmação de Exclusão</h3>
+                        <p>Tem certeza que deseja excluir sua conta? Esta ação é irreversível e:</p>
+                    </div>
+                    <ul style="margin-bottom: 20px; padding-left: 20px;">
+                        <li>Seu ID atual será perdido permanentemente</li>
+                        <li>Todas as suas salas serão deletadas</li>
+                        <li>Seu histórico de mensagens será apagado</li>
+                        <li>Um novo ID anônimo será gerado</li>
+                    </ul>
+                    <div class="texto-form" style="text-align: center;">
+                        Esta ação não pode ser desfeita.
+                    </div>
+                </div>
+                <div class="rodape-modal" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn" id="cancelarExcluirConta">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button class="btn btn-perigo" id="confirmarExcluirConta">
+                        <i class="fas fa-trash"></i> Excluir Conta
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Tela de Lista de Salas -->
         <div class="tela ativa" id="telaListaSalas">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2>Salas Disponíveis</h2>
+                <button class="btn btn-primario" id="btnCriarSala">
+                    <i class="fas fa-plus"></i> Nova Sala
+                </button>
+            </div>
             <ul class="lista-salas" id="listaSalas">
                 <!-- Salas serão carregadas aqui -->
             </ul>
@@ -1023,24 +704,20 @@
         <div class="tela" id="telaChat">
             <div class="barra-cabecalho-chat">
                 <button class="btn-voltar" id="voltarListaSalas">
-                    <i class="fas fa-arrow-left"></i> <span>Voltar</span>
+                    <i class="fas fa-arrow-left"></i> Voltar
                 </button>
-                <div class="conteudo-central">
-                    <h2 class="titulo-chat" id="nomeSalaAtiva">Sala</h2>
+                <div style="text-align: center;">
+                    <div class="titulo-chat" id="nomeSalaAtiva">Sala Anônima</div>
                     <div class="temporizador-chat">
-                        <i class="fas fa-clock icone-temporizador"></i>
-                        <span id="temporizadorChat">06:00:00</span>
+                        <i class="fas fa-clock"></i>
+                        <span id="temporizadorChat">60:00</span>
                     </div>
                 </div>
-                <div class="acoes-chat">
-                    <button class="btn-acao-chat perigo" id="botaoDeletarSala" title="Deletar Sala">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+                <button class="btn btn-perigo" id="botaoDeletarSala" title="Deletar Sala" style="padding: 8px 12px;">
+                    <i class="fas fa-trash"></i>
+                </button>
             </div>
-            <div class="barra-queima-container">
-                <div class="barra-queima" id="barraQueima"></div>
-            </div>
+            <div class="barra-queima" id="barraQueima"></div>
             <div class="container-mensagens" id="containerMensagens">
                 <!-- Mensagens serão carregadas aqui -->
             </div>
@@ -1067,7 +744,7 @@
             temporizadorDigitacao: null,
             temporizadorChat: null,
             expiracaoChat: null,
-            salasUsuario: {}
+            digitando: false
         };
 
         // Elementos DOM
@@ -1075,33 +752,39 @@
             // Splash screen
             telaSplash: document.getElementById('telaSplash'),
 
-            // Modais
-            modalUsuario: document.getElementById('modalUsuario'),
-            modalCriarSala: document.getElementById('modalCriarSala'),
+            // Telas
+            telaListaSalas: document.getElementById('telaListaSalas'),
+            telaChat: document.getElementById('telaChat'),
 
             // Header e menu
             botaoMenu: document.getElementById('botaoMenu'),
             menuDropdown: document.getElementById('menuDropdown'),
             menuPerfil: document.getElementById('menuPerfil'),
             menuCriarSala: document.getElementById('menuCriarSala'),
+            menuExcluirConta: document.getElementById('menuExcluirConta'),
 
             // Perfil do usuário
-            perfilUsuario: document.getElementById('perfilUsuario'),
             apelidoUsuario: document.getElementById('apelidoUsuario'),
             apelidoModalUsuario: document.getElementById('apelidoModalUsuario'),
+            contadorOnline: document.getElementById('contadorOnline'),
 
-            // Botões
+            // Modais
+            modalUsuario: document.getElementById('modalUsuario'),
+            modalCriarSala: document.getElementById('modalCriarSala'),
+            modalExcluirConta: document.getElementById('modalExcluirConta'),
+
+            // Botões modais
             fecharModalUsuario: document.getElementById('fecharModalUsuario'),
             fecharModalCriarSala: document.getElementById('fecharModalCriarSala'),
-            deletarConta: document.getElementById('deletarConta'),
+            fecharModalExcluirConta: document.getElementById('fecharModalExcluirConta'),
+            fecharPerfil: document.getElementById('fecharPerfil'),
             cancelarCriarSala: document.getElementById('cancelarCriarSala'),
             confirmarCriarSala: document.getElementById('confirmarCriarSala'),
-            voltarListaSalas: document.getElementById('voltarListaSalas'),
-            botaoDeletarSala: document.getElementById('botaoDeletarSala'),
+            cancelarExcluirConta: document.getElementById('cancelarExcluirConta'),
+            confirmarExcluirConta: document.getElementById('confirmarExcluirConta'),
+            btnCriarSala: document.getElementById('btnCriarSala'),
 
             // Elementos de chat
-            telaListaSalas: document.getElementById('telaListaSalas'),
-            telaChat: document.getElementById('telaChat'),
             listaSalas: document.getElementById('listaSalas'),
             containerMensagens: document.getElementById('containerMensagens'),
             entradaMensagem: document.getElementById('entradaMensagem'),
@@ -1109,8 +792,9 @@
             indicadorDigitacao: document.getElementById('indicadorDigitacao'),
             temporizadorChat: document.getElementById('temporizadorChat'),
             barraQueima: document.getElementById('barraQueima'),
-            contadorOnline: document.getElementById('contadorOnline'),
             nomeSalaAtiva: document.getElementById('nomeSalaAtiva'),
+            voltarListaSalas: document.getElementById('voltarListaSalas'),
+            botaoDeletarSala: document.getElementById('botaoDeletarSala'),
 
             // Elementos de formulário
             entradaNomeSala: document.getElementById('entradaNomeSala'),
@@ -1118,90 +802,105 @@
         };
 
         // Inicializar a aplicação
-        async function inicializar() {
-            await carregarDoArmazenamento();
+        function inicializar() {
+            carregarDoArmazenamento();
             configurarEventos();
+            atualizarContadorOnline();
 
-            // Mostrar splash screen por 3 segundos
+            // Mostrar splash screen por 2 segundos
             setTimeout(() => {
                 elementos.telaSplash.style.display = 'none';
                 mostrarListaSalas();
-            }, 3000);
-
-            atualizarContadorOnline();
+            }, 2000);
         }
 
         // Carregar dados do localStorage
-        async function carregarDoArmazenamento() {
-            const apelidoSalvo = localStorage.getItem('burnBox_apelido');
-            const salasUsuarioSalvas = localStorage.getItem('burnBox_salasUsuario');
-            
-            // Gerar apelido aleatório se não existir
+        function carregarDoArmazenamento() {
+            // Gerar ou carregar apelido
+            let apelidoSalvo = localStorage.getItem('burnBox_apelido');
             if (!apelidoSalvo) {
-                try {
-                    const resposta = await fetch('/api/gerar-apelido');
-                    const dados = await resposta.json();
-                    estado.apelido = dados.apelido;
-                } catch (erro) {
-                    estado.apelido = gerarApelidoAleatorio();
-                }
+                estado.apelido = gerarApelidoAleatorio();
                 localStorage.setItem('burnBox_apelido', estado.apelido);
             } else {
                 estado.apelido = apelidoSalvo;
             }
-            
+
             // Atualizar UI com informações do usuário
             atualizarInformacoesUsuario();
-            
-            // Carregar salas do servidor
-            try {
-                const resposta = await fetch('/api/salas');
-                const dados = await resposta.json();
-                if (dados.sucesso) {
-                    estado.salas = dados.salas;
-                    estado.usuariosOnline = dados.usuariosOnline;
-                }
-            } catch (erro) {
-                console.error('Erro ao carregar salas:', erro);
-                // Usar dados padrão se a API falhar
+
+            // Carregar salas
+            const salasSalvas = localStorage.getItem('burnBox_salas');
+            if (salasSalvas) {
+                estado.salas = JSON.parse(salasSalvas);
+            } else {
+                // Salas padrão
                 estado.salas = [
                     { 
                         id: 'sala1', 
-                        nome: 'Chat Geral BurnBox', 
+                        nome: 'BURN#GERAL001', 
                         usuarios: 15, 
                         preview: 'Bem-vindo ao chat geral BurnBox!', 
                         tempoAutoDestruicao: 0,
-                        criador: null,
+                        criador: 'sistema',
                         fixa: true
                     },
                     { 
                         id: 'sala2', 
-                        nome: 'Discussões Livres', 
+                        nome: 'BURN#CHAT002', 
                         usuarios: 23, 
                         preview: 'Converse sobre qualquer coisa aqui...', 
                         tempoAutoDestruicao: 60,
-                        criador: null 
+                        criador: 'sistema',
+                        fixa: true
                     },
                     { 
                         id: 'sala3', 
-                        nome: 'Confissões Anônimas', 
+                        nome: 'BURN#SECRET003', 
                         usuarios: 47, 
                         preview: 'Compartilhe seus segredos anonimamente...', 
                         tempoAutoDestruicao: 60,
-                        criador: null 
+                        criador: 'sistema',
+                        fixa: true
                     }
                 ];
+                salvarSalas();
             }
-            
-            if (salasUsuarioSalvas) {
-                estado.salasUsuario = JSON.parse(salasUsuarioSalvas);
+
+            // Carregar mensagens
+            const mensagensSalvas = localStorage.getItem('burnBox_mensagens');
+            if (mensagensSalvas) {
+                estado.mensagens = JSON.parse(mensagensSalvas);
             }
         }
 
-        // Gerar apelido aleatório (BURN + 4 dígitos + #)
+        // Gerar apelido aleatório no formato BURN#XXXXAX#
         function gerarApelidoAleatorio() {
+            const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numeros = '0123456789';
+            
+            let apelido = 'BURN#';
+            
+            // Adicionar 4 dígitos
+            for (let i = 0; i < 4; i++) {
+                apelido += numeros.charAt(Math.floor(Math.random() * numeros.length));
+            }
+            
+            // Adicionar uma letra
+            apelido += letras.charAt(Math.floor(Math.random() * letras.length));
+            
+            // Adicionar um dígito final
+            apelido += numeros.charAt(Math.floor(Math.random() * numeros.length));
+            apelido += '#';
+            
+            return apelido;
+        }
+
+        // Gerar nome de sala aleatório no formato BURN#CHATXXXX
+        function gerarNomeSalaAleatorio() {
+            const prefixos = ['CHAT', 'TALK', 'ROOM', 'ZONE', 'SPACE', 'PLACE'];
+            const prefixo = prefixos[Math.floor(Math.random() * prefixos.length)];
             const numero = Math.floor(1000 + Math.random() * 9000);
-            return 'BURN' + numero + '#';
+            return `BURN#${prefixo}${numero}`;
         }
 
         // Atualizar informações do usuário na UI
@@ -1220,7 +919,12 @@
             });
             elementos.menuCriarSala.addEventListener('click', () => {
                 esconderMenu();
+                elementos.entradaNomeSala.value = gerarNomeSalaAleatorio();
                 mostrarModal(elementos.modalCriarSala);
+            });
+            elementos.menuExcluirConta.addEventListener('click', () => {
+                esconderMenu();
+                mostrarModal(elementos.modalExcluirConta);
             });
 
             // Fechar menu ao clicar fora
@@ -1233,9 +937,16 @@
             // Controles de modal
             elementos.fecharModalUsuario.addEventListener('click', () => esconderModal(elementos.modalUsuario));
             elementos.fecharModalCriarSala.addEventListener('click', () => esconderModal(elementos.modalCriarSala));
+            elementos.fecharModalExcluirConta.addEventListener('click', () => esconderModal(elementos.modalExcluirConta));
+            elementos.fecharPerfil.addEventListener('click', () => esconderModal(elementos.modalUsuario));
             elementos.cancelarCriarSala.addEventListener('click', () => esconderModal(elementos.modalCriarSala));
-            elementos.deletarConta.addEventListener('click', deletarConta);
+            elementos.cancelarExcluirConta.addEventListener('click', () => esconderModal(elementos.modalExcluirConta));
             elementos.confirmarCriarSala.addEventListener('click', criarNovaSala);
+            elementos.confirmarExcluirConta.addEventListener('click', excluirConta);
+            elementos.btnCriarSala.addEventListener('click', () => {
+                elementos.entradaNomeSala.value = gerarNomeSalaAleatorio();
+                mostrarModal(elementos.modalCriarSala);
+            });
 
             // Funcionalidade de chat
             elementos.enviarMensagem.addEventListener('click', enviarMensagem);
@@ -1246,41 +957,18 @@
             elementos.voltarListaSalas.addEventListener('click', mostrarListaSalas);
             elementos.botaoDeletarSala.addEventListener('click', deletarSalaAtual);
 
-            // Gerar nome aleatório de sala quando o modal abrir
-            elementos.modalCriarSala.addEventListener('click', async () => {
-                try {
-                    const resposta = await fetch('/api/gerar-nome-sala');
-                    const dados = await resposta.json();
-                    if (dados.sucesso) {
-                        elementos.entradaNomeSala.value = dados.nomeSala;
-                    }
-                } catch (erro) {
-                    elementos.entradaNomeSala.value = gerarNomeSalaAleatorio();
-                }
-            });
-
             // Atualizar contador online periodicamente
             setInterval(atualizarContadorOnline, 30000);
         }
 
-        // Gerar nome aleatório de sala (fallback)
-        function gerarNomeSalaAleatorio() {
-            const prefixos = ['Privada', 'Secreta', 'Anônima', 'Oculta', 'Segura', 'Criptografada', 'Fantasma', 'Silenciosa'];
-            const sufixos = ['Sala', 'Espaço', 'Lugar', 'Canal', 'Central', 'Zona', 'Canto', 'Lounge'];
-            const prefixoAleatorio = prefixos[Math.floor(Math.random() * prefixos.length)];
-            const sufixoAleatorio = sufixos[Math.floor(Math.random() * sufixos.length)];
-            const idAleatorio = Math.floor(Math.random() * 9000) + 1000;
-            return `${prefixoAleatorio} ${sufixoAleatorio} ${idAleatorio}`;
-        }
-
         // Mostrar modal
         function mostrarModal(modal) {
-            modal.style.display = 'flex';
+            modal.classList.add('ativo');
         }
 
         // Esconder modal
         function esconderModal(modal) {
-            modal.style.display = 'none';
+            modal.classList.remove('ativo');
         }
 
         // Toggle menu hamburguer
@@ -1294,87 +982,60 @@
         }
 
         // Criar nova sala
-        async function criarNovaSala() {
+        function criarNovaSala() {
             const nomeSala = elementos.entradaNomeSala.value;
             const tempoDestruicao = parseFloat(elementos.selecionarTempoDestruicao.value);
             
-            try {
-                const resposta = await fetch('/api/salas', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        nome: nomeSala,
-                        tempoAutoDestruicao: tempoDestruicao,
-                        criador: estado.apelido
-                    })
-                });
-                
-                const dados = await resposta.json();
-                
-                if (dados.sucesso) {
-                    // Salvar que este usuário criou esta sala
-                    estado.salasUsuario[estado.apelido] = dados.sala.id;
-                    localStorage.setItem('burnBox_salasUsuario', JSON.stringify(estado.salasUsuario));
+            const novaSala = {
+                id: 'sala_' + Date.now(),
+                nome: nomeSala,
+                usuarios: 1,
+                preview: 'Nova sala criada. Seja o primeiro a enviar uma mensagem!',
+                tempoAutoDestruicao: tempoDestruicao,
+                criador: estado.apelido,
+                fixa: false
+            };
 
-                    // Adicionar a nova sala à lista de salas
-                    estado.salas.push(dados.sala);
+            estado.salas.push(novaSala);
+            salvarSalas();
+            esconderModal(elementos.modalCriarSala);
+            mostrarListaSalas();
 
-                    esconderModal(elementos.modalCriarSala);
-                    await mostrarListaSalas();
-
-                    // Abrir a sala recém-criada
-                    setTimeout(() => abrirSala(dados.sala.id), 100);
-                } else {
-                    alert('Erro ao criar sala: ' + dados.erro);
-                }
-            } catch (erro) {
-                console.error('Erro ao criar sala:', erro);
-                alert('Erro ao criar sala. Verifique sua conexão.');
-            }
+            // Abrir a sala recém-criada
+            setTimeout(() => abrirSala(novaSala.id), 100);
         }
 
-        // Deletar conta
-        function deletarConta() {
-            if (confirm('Tem certeza que deseja deletar sua conta? Seu ID anônimo atual será perdido e um novo será gerado.')) {
-                // Remover dados do usuário
-                localStorage.removeItem('burnBox_apelido');
-                localStorage.removeItem('burnBox_salasUsuario');
-                
-                // Gerar novo apelido
-                estado.apelido = gerarApelidoAleatorio();
-                estado.salasUsuario = {};
-                
-                localStorage.setItem('burnBox_apelido', estado.apelido);
-                atualizarInformacoesUsuario();
-                esconderModal(elementos.modalUsuario);
-                
-                // Mostrar confirmação
-                alert('Conta deletada. Seu novo ID anônimo é: ' + estado.apelido);
-            }
+        // Excluir conta
+        function excluirConta() {
+            // Remover dados do usuário
+            localStorage.removeItem('burnBox_apelido');
+            localStorage.removeItem('burnBox_salas');
+            localStorage.removeItem('burnBox_mensagens');
+            
+            // Gerar novo apelido
+            estado.apelido = gerarApelidoAleatorio();
+            estado.salas = estado.salas.filter(sala => sala.criador !== estado.apelido);
+            estado.mensagens = {};
+            
+            localStorage.setItem('burnBox_apelido', estado.apelido);
+            salvarSalas();
+            localStorage.setItem('burnBox_mensagens', JSON.stringify(estado.mensagens));
+            
+            atualizarInformacoesUsuario();
+            esconderModal(elementos.modalExcluirConta);
+            
+            // Mostrar confirmação
+            alert('Conta excluída. Seu novo ID anônimo é: ' + estado.apelido);
+            mostrarListaSalas();
         }
 
         // Mostrar lista de salas
-        async function mostrarListaSalas() {
+        function mostrarListaSalas() {
             esconderTodasTelas();
             elementos.telaListaSalas.classList.add('ativa');
             
             // Limpar lista atual
             elementos.listaSalas.innerHTML = '';
-            
-            // Carregar salas do servidor
-            try {
-                const resposta = await fetch('/api/salas');
-                const dados = await resposta.json();
-                if (dados.sucesso) {
-                    estado.salas = dados.salas;
-                    estado.usuariosOnline = dados.usuariosOnline;
-                    atualizarContadorOnline();
-                }
-            } catch (erro) {
-                console.error('Erro ao carregar salas:', erro);
-            }
             
             // Adicionar salas à lista
             if (estado.salas.length === 0) {
@@ -1392,10 +1053,9 @@
                     const elementoSala = document.createElement('li');
                     elementoSala.className = 'item-sala';
                     
-                    // Verificar se esta sala foi criada pelo usuário atual
-                    const salaDoUsuario = estado.salasUsuario[estado.apelido] === sala.id;
-                    
+                    const salaDoUsuario = sala.criador === estado.apelido;
                     const ehOficial = sala.fixa;
+                    
                     elementoSala.innerHTML = `
                         <div class="cabecalho-sala">
                             <div class="nome-sala">${ehOficial ? '<i class="fas fa-crown" style="color: gold; margin-right: 5px;"></i>' : ''}${sala.nome}</div>
@@ -1413,15 +1073,10 @@
                     elementos.listaSalas.appendChild(elementoSala);
                 });
             }
-            
-            // Rolar para o topo após carregar
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 100);
         }
 
         // Abrir sala
-        async function abrirSala(salaId) {
+        function abrirSala(salaId) {
             esconderTodasTelas();
             elementos.telaChat.classList.add('ativa');
 
@@ -1430,14 +1085,14 @@
             elementos.nomeSalaAtiva.textContent = sala.nome;
 
             // Mostrar botão de deletar apenas se este usuário criou a sala e não é fixa/oficial
-            const salaDoUsuario = estado.salasUsuario[estado.apelido] === salaId;
+            const salaDoUsuario = sala.criador === estado.apelido;
             const ehFixa = sala.fixa;
             elementos.botaoDeletarSala.style.display = (salaDoUsuario && !ehFixa) ? 'block' : 'none';
 
             // Carregar mensagens
-            await carregarMensagens(salaId);
+            carregarMensagens(salaId);
 
-            // Iniciar temporizador do chat com tempo específico
+            // Iniciar temporizador do chat
             iniciarTemporizadorChat(sala.tempoAutoDestruicao);
 
             // Focar na entrada de mensagem
@@ -1445,26 +1100,13 @@
         }
 
         // Carregar mensagens
-        async function carregarMensagens(salaId) {
+        function carregarMensagens(salaId) {
             elementos.containerMensagens.innerHTML = '';
             
-            try {
-                const resposta = await fetch(`/api/salas/${salaId}/mensagens`);
-                const dados = await resposta.json();
-                
-                if (dados.sucesso) {
-                    dados.mensagens.forEach(mensagem => {
-                        adicionarMensagemAoChat(mensagem, salaId);
-                    });
-                }
-            } catch (erro) {
-                console.error('Erro ao carregar mensagens:', erro);
-                // Usar mensagens locais em caso de erro
-                if (estado.mensagens[salaId]) {
-                    estado.mensagens[salaId].forEach(mensagem => {
-                        adicionarMensagemAoChat(mensagem, salaId);
-                    });
-                }
+            if (estado.mensagens[salaId]) {
+                estado.mensagens[salaId].forEach(mensagem => {
+                    adicionarMensagemAoChat(mensagem, salaId);
+                });
             }
             
             // Rolar para a mensagem mais recente
@@ -1493,49 +1135,44 @@
         }
 
         // Enviar mensagem
-        async function enviarMensagem() {
+        function enviarMensagem() {
             const texto = elementos.entradaMensagem.value.trim();
             if (!texto || !estado.salaAtiva) return;
-            
-            try {
-                const resposta = await fetch(`/api/salas/${estado.salaAtiva}/mensagens`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        remetente: estado.apelido,
-                        texto: texto
-                    })
-                });
-                
-                const dados = await resposta.json();
-                
-                if (dados.sucesso) {
-                    // Adicionar ao DOM
-                    adicionarMensagemAoChat(dados.mensagem, estado.salaAtiva);
-                    
-                    // Limpar entrada
-                    elementos.entradaMensagem.value = '';
-                    
-                    // Atualizar preview da sala
-                    atualizarPreviewSala(estado.salaAtiva, texto);
-                    
-                    // Resetar temporizador do chat (se não for infinito)
-                    const sala = estado.salas.find(s => s.id === estado.salaAtiva);
-                    if (sala.tempoAutoDestruicao > 0) {
-                        resetarTemporizadorChat();
-                    }
-                    
-                    // Rolar para a mensagem mais recente
-                    rolarParaBaixo();
-                } else {
-                    alert('Erro ao enviar mensagem: ' + dados.erro);
-                }
-            } catch (erro) {
-                console.error('Erro ao enviar mensagem:', erro);
-                alert('Erro ao enviar mensagem. Verifique sua conexão.');
+
+            const mensagem = {
+                remetente: estado.apelido,
+                texto: texto,
+                tempo: new Date().toISOString(),
+                sistema: false
+            };
+
+            // Salvar mensagem
+            if (!estado.mensagens[estado.salaAtiva]) {
+                estado.mensagens[estado.salaAtiva] = [];
             }
+            estado.mensagens[estado.salaAtiva].push(mensagem);
+            localStorage.setItem('burnBox_mensagens', JSON.stringify(estado.mensagens));
+
+            // Adicionar ao DOM
+            adicionarMensagemAoChat(mensagem, estado.salaAtiva);
+
+            // Limpar entrada
+            elementos.entradaMensagem.value = '';
+
+            // Atualizar preview da sala
+            atualizarPreviewSala(estado.salaAtiva, texto);
+
+            // Resetar temporizador do chat (se não for infinito)
+            const sala = estado.salas.find(s => s.id === estado.salaAtiva);
+            if (sala.tempoAutoDestruicao > 0) {
+                resetarTemporizadorChat();
+            }
+
+            // Rolar para a mensagem mais recente
+            rolarParaBaixo();
+
+            // Simular alguém digitando
+            simularDigitacao();
         }
 
         // Atualizar preview da sala
@@ -1545,23 +1182,43 @@
                 sala.preview = ultimaMensagem.length > 50 ? 
                     ultimaMensagem.substring(0, 50) + '...' : 
                     ultimaMensagem;
+                salvarSalas();
             }
         }
 
         // Manipular indicador de digitação
         function manipularDigitacao() {
-            // Mostrar indicador de digitação para outros usuários (simulado)
-            elementos.indicadorDigitacao.classList.add('ativa');
+            if (!estado.digitando) {
+                estado.digitando = true;
+                elementos.indicadorDigitacao.classList.add('ativa');
+            }
             
             // Limpar temporizador anterior
             if (estado.temporizadorDigitacao) {
                 clearTimeout(estado.temporizadorDigitacao);
             }
             
-            // Esconder indicador após 2 segundos
+            // Esconder indicador após 3 segundos
             estado.temporizadorDigitacao = setTimeout(() => {
                 elementos.indicadorDigitacao.classList.remove('ativa');
-            }, 2000);
+                estado.digitando = false;
+            }, 3000);
+        }
+
+        // Simular alguém digitando (para demonstração)
+        function simularDigitacao() {
+            // Em uma aplicação real, isso seria feito via WebSockets
+            // Aqui é apenas para demonstração
+            if (Math.random() > 0.7) {
+                setTimeout(() => {
+                    if (estado.salaAtiva && !estado.digitando) {
+                        elementos.indicadorDigitacao.classList.add('ativa');
+                        setTimeout(() => {
+                            elementos.indicadorDigitacao.classList.remove('ativa');
+                        }, 2000);
+                    }
+                }, 1000);
+            }
         }
 
         // Iniciar temporizador do chat
@@ -1573,11 +1230,15 @@
                 return;
             }
 
-            // Definir expiração baseada no tempo especificado a partir de agora
+            // Definir expiração
             estado.expiracaoChat = new Date(Date.now() + minutosTempoDestruicao * 60 * 1000);
             atualizarDisplayTemporizadorChat();
 
             // Atualizar a cada segundo
+            if (estado.temporizadorChat) {
+                clearInterval(estado.temporizadorChat);
+            }
+            
             estado.temporizadorChat = setInterval(atualizarDisplayTemporizadorChat, 1000);
         }
 
@@ -1587,7 +1248,6 @@
             
             const sala = estado.salas.find(s => s.id === estado.salaAtiva);
             if (sala && sala.tempoAutoDestruicao > 0) {
-                // Resetar expiração baseada no tempo especificado a partir de agora
                 estado.expiracaoChat = new Date(Date.now() + sala.tempoAutoDestruicao * 60 * 1000);
             }
         }
@@ -1601,7 +1261,7 @@
 
             if (diferenca <= 0) {
                 // Temporizador expirado
-                elementos.temporizadorChat.textContent = '00:00:00';
+                elementos.temporizadorChat.textContent = '00:00';
                 elementos.barraQueima.style.width = '100%';
                 clearInterval(estado.temporizadorChat);
 
@@ -1612,43 +1272,28 @@
                     estado.salas = estado.salas.filter(s => s.id !== estado.salaAtiva);
                     delete estado.mensagens[estado.salaAtiva];
 
-                    // Remover de salasUsuario se foi criada por este usuário
-                    for (const usuario in estado.salasUsuario) {
-                        if (estado.salasUsuario[usuario] === estado.salaAtiva) {
-                            delete estado.salasUsuario[usuario];
-                            break;
-                        }
-                    }
-
-                    localStorage.setItem('burnBox_salas', JSON.stringify(estado.salas));
+                    salvarSalas();
                     localStorage.setItem('burnBox_mensagens', JSON.stringify(estado.mensagens));
-                    localStorage.setItem('burnBox_salasUsuario', JSON.stringify(estado.salasUsuario));
 
                     estado.salaAtiva = null;
 
                     alert('Esta sala expirou por inatividade e foi deletada. Retornando para a lista de salas.');
                     mostrarListaSalas();
-                } else {
-                    // Para salas fixas, apenas alertar mas não deletar
-                    alert('Esta sala oficial expirou, mas permanece disponível.');
-                    mostrarListaSalas();
                 }
                 return;
             }
 
-            // Calcular horas, minutos e segundos
-            const horas = Math.floor(diferenca / (1000 * 60 * 60));
-            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            // Calcular minutos e segundos
+            const minutos = Math.floor(diferenca / (1000 * 60));
             const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
 
-            // Formatar como HH:MM:SS
-            elementos.temporizadorChat.textContent =
-                `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            // Formatar como MM:SS
+            elementos.temporizadorChat.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
 
-            // Atualizar barra de queima (inversa - quanto menos tempo, mais cheia)
+            // Atualizar barra de queima
             const sala = estado.salas.find(s => s.id === estado.salaAtiva);
             if (sala && sala.tempoAutoDestruicao > 0) {
-                const tempoTotal = sala.tempoAutoDestruicao * 60 * 1000; // em milissegundos
+                const tempoTotal = sala.tempoAutoDestruicao * 60 * 1000;
                 const progresso = ((tempoTotal - diferenca) / tempoTotal) * 100;
                 elementos.barraQueima.style.width = `${Math.min(100, Math.max(0, progresso))}%`;
             }
@@ -1673,55 +1318,38 @@
 
         // Atualizar contador online
         function atualizarContadorOnline() {
+            // Simular variação de usuários online
+            const variacao = Math.floor(Math.random() * 10) - 5;
+            estado.usuariosOnline = Math.max(10, estado.usuariosOnline + variacao);
             elementos.contadorOnline.textContent = estado.usuariosOnline;
         }
 
-        // Deletar sala atual (apenas para criador)
-        async function deletarSalaAtual() {
+        // Deletar sala atual
+        function deletarSalaAtual() {
             if (!estado.salaAtiva) return;
 
             const sala = estado.salas.find(s => s.id === estado.salaAtiva);
-            if (!sala) return;
+            if (!sala || sala.criador !== estado.apelido || sala.fixa) return;
 
             // Confirmar deleção
             if (confirm(`Tem certeza que deseja deletar a sala "${sala.nome}"? Esta ação não pode ser desfeita.`)) {
-                try {
-                    const resposta = await fetch(`/api/salas/${estado.salaAtiva}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            criador: estado.apelido
-                        })
-                    });
-                    
-                    const dados = await resposta.json();
-                    
-                    if (dados.sucesso) {
-                        // Remover a sala
-                        estado.salas = estado.salas.filter(s => s.id !== estado.salaAtiva);
-                        delete estado.mensagens[estado.salaAtiva];
+                // Remover a sala
+                estado.salas = estado.salas.filter(s => s.id !== estado.salaAtiva);
+                delete estado.mensagens[estado.salaAtiva];
 
-                        // Remover de salasUsuario
-                        delete estado.salasUsuario[estado.apelido];
+                salvarSalas();
+                localStorage.setItem('burnBox_mensagens', JSON.stringify(estado.mensagens));
+                
+                estado.salaAtiva = null;
 
-                        localStorage.setItem('burnBox_salas', JSON.stringify(estado.salas));
-                        localStorage.setItem('burnBox_mensagens', JSON.stringify(estado.mensagens));
-                        localStorage.setItem('burnBox_salasUsuario', JSON.stringify(estado.salasUsuario));
-                        
-                        estado.salaAtiva = null;
-
-                        alert('Sala deletada com sucesso.');
-                        mostrarListaSalas();
-                    } else {
-                        alert('Erro ao deletar sala: ' + dados.erro);
-                    }
-                } catch (erro) {
-                    console.error('Erro ao deletar sala:', erro);
-                    alert('Erro ao deletar sala. Verifique sua conexão.');
-                }
+                alert('Sala deletada com sucesso.');
+                mostrarListaSalas();
             }
+        }
+
+        // Salvar salas no localStorage
+        function salvarSalas() {
+            localStorage.setItem('burnBox_salas', JSON.stringify(estado.salas));
         }
 
         // Formatar tempo de auto-destruição
@@ -1734,12 +1362,7 @@
         }
 
         // Inicializar quando o DOM estiver carregado
-        document.addEventListener('DOMContentLoaded', function() {
-            // Garantir que a inicialização ocorra
-            setTimeout(() => {
-                inicializar();
-            }, 100);
-        });
+        document.addEventListener('DOMContentLoaded', inicializar);
     </script>
 </body>
 </html>
