@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BurnBox - Chat anônimo e seguro com mensagens autodestrutivas. Suas conversas desaparecem após serem lidas." />
+  <title>BurnBox - Chat Privado e Anônimo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    :root {
+      --primary-color: #FF4500;
+      --primary-dark: #CC3700;
+      --secondary-color: #FF6A00;
+      --bg-dark: #000;
+      --bg-card: #1E1E1E;
+      --text-light: #bbb;
+      --text-white: #fff;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Header e Banner */
+    header {
+      position: relative;
+      width: 100%;
+      height: 90vh;
+      background: radial-gradient(circle at center, #1E1E1E 0%, #000 100%);
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      animation: slideAnimation 18s infinite;
+    }
+
+    .slide:nth-child(1) { background-image: url('banner1.jpg'); animation-delay: 0s; }
+    .slide:nth-child(2) { background-image: url('banner2.jpg'); animation-delay: 6s; }
+    .slide:nth-child(3) { background-image: url('banner3.jpg'); animation-delay: 12s; }
+
+    @keyframes slideAnimation {
+      0% { opacity: 0; }
+      10%, 30% { opacity: 1; }
+      40%, 100% { opacity: 0; }
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .overlay h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--primary-color);
+      text-shadow: 0 0 20px var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .overlay p {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      max-width: 800px;
+      color: #ccc;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    .cta-button {
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      padding: 15px 40px;
+      color: var(--text-white);
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(255,69,0,0.6);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-button:hover, .cta-button:focus { 
+      transform: scale(1.05); 
+      box-shadow: 0 0 30px rgba(255,69,0,1); 
+    }
+
+    .cta-button:active {
+      transform: scale(0.98);
+    }
+
+    .secondary-button {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      box-shadow: none;
+    }
+
+    .secondary-button:hover, .secondary-button:focus {
+      background: rgba(255, 69, 0, 0.1);
+    }
+
+    /* Seções de conteúdo */
+    section {
+      padding: 80px 8%;
+    }
+
+    .section-title {
+      text-align: center;
+      color: var(--primary-color);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: var(--primary-color);
+      margin: 15px auto;
+      border-radius: 2px;
+    }
+
+    .about, .team, .help, .contact, .features {
+      text-align: center;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+
+    .about p, .help p, .contact p {
+      max-width: 800px;
+      margin: 0 auto 30px;
+      font-size: 1.1rem;
+    }
+
+    /* Seção de recursos */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      padding: 30px 20px;
+      border-radius: 10px;
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .feature-card:hover { 
+      transform: translateY(-10px); 
+      box-shadow: 0 10px 20px rgba(255,69,0,0.2); 
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      color: var(--text-white);
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    /* Equipe */
+    .team-members {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .member {
+      background: var(--bg-card);
+      padding: 25px;
+      border-radius: 10px;
+      width: 220px;
+      transition: 0.3s;
+    }
+
+    .member:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 0 15px var(--primary-color); 
+    }
+    
+    .member img { 
+      width: 100px; 
+      height: 100px;
+      border-radius: 50%; 
+      margin-bottom: 15px;
+      object-fit: cover;
+      border: 2px solid var(--primary-color);
+    }
+
+    .member h3 {
+      color: var(--text-white);
+      margin-bottom: 5px;
+    }
+
+    .member p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    /* FAQ */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      margin-bottom: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 20px;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--text-white);
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-question:focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+
+    .faq-answer {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      padding: 0 20px 20px;
+      max-height: 500px;
+    }
+
+    /* Footer */
+    footer {
+      background: #111;
+      text-align: center;
+      padding: 40px;
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #222;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .footer-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover, .footer-links a:focus {
+      color: var(--primary-color);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      section {
+        padding: 60px 5%;
+      }
+      
+      .cta-container {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      .cta-button {
+        width: 100%;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+    /* Acessibilidade - foco melhorado */
+    a:focus, button:focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+
+    /* Indicador de carregamento para imagens */
+    .loading {
+      background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="overlay">
+      <h1>BurnBox</h1>
+      <p>Chat anônimo, seguro e com mensagens autodestrutivas — redesenhado para a era digital. Suas conversas desaparecem após serem lidas, sem deixar rastros.</p>
+      <div class="cta-container">
+        <a href="https://t.me/BurnBoxbot" class="cta-button" target="_blank" aria-label="Acesse o BurnBox no Telegram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.89-.89.56-2.45-1.83-3.57-2.98-5.79-4.78-.54-.45-.92-.68-.89-1.07.03-.38.43-.55.99-.4 1.78.57 4.67 1.77 5.19 1.9.23.06.45.03.62-.14.17-.17.22-.4.15-.62-.2-.67-3.61-3.57-4.9-4.83-.37-.35-.71-.53-1.02-.51-.28.01-.8.17-.8.17s-1.03.67-2.94 1.98c-.36.25-.69.37-1.01.36-.35 0-.95-.17-1.48-.31-.6-.16-1.07-.25-1.03-.53.03-.19.23-.38.67-.55 2.56-1.16 4.35-1.95 5.9-2.62 3.33-1.42 4.05-1.67 4.5-1.67.12 0 .38.03.55.2.14.14.18.33.2.58z"/>
+          </svg>
+          Acessar MiniApp Telegram 
+        </a>
+        <a href="#features" class="cta-button secondary-button" aria-label="Saiba mais sobre os recursos do BurnBox">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+          </svg>
+          Saiba Mais
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="about">
+    <h2 class="section-title">Como Funciona</h2>
+    <p>O BurnBox é um sistema de chat focado em privacidade onde as mensagens desaparecem após serem lidas. Todos os dados são criptografados e armazenados temporariamente em um container digital de queima — suas palavras, seu controle, nenhum rastro deixado para trás.</p>
+    <p>Utilizamos criptografia de ponta a ponta e não armazenamos metadados de conversas. Cada mensagem tem um tempo de vida limitado, garantindo que suas comunicações sejam tão efêmeras quanto uma conversa pessoal.</p>
+  </section>
+
+  <section class="features" id="features">
+    <h2 class="section-title">Recursos Principais</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Privacidade Total</h3>
+        <p>Mensagens criptografadas de ponta a ponta. Nem mesmo nós temos acesso ao conteúdo das suas conversas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔥</div>
+        <h3>Autodestruição</h3>
+        <p>Mensagens desaparecem automaticamente após serem lidas. Você controla o tempo de vida de cada conversa.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👤</div>
+        <h3>Anonimato</h3>
+        <p>Não exigimos informações pessoais. Use pseudônimos e mantenha sua identidade protegida.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>Fácil Uso</h3>
+        <p>Interface intuitiva dentro do Telegram. Nenhuma instalação complicada ou configuração técnica necessária.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="team">
+    <h2 class="section-title">Conheça a Equipe</h2>
+    <div class="team-members">
+      <div class="member">
+        <img src="dev1.jpg" alt="Alex Carter, desenvolvedor principal do BurnBox" loading="lazy">
+        <h3>Alex Carter</h3>
+        <p>Desenvolvedor Principal</p>
+      </div>
+      <div class="member">
+        <img src="dev2.jpg" alt="Sara Lin, designer de UX/UI do BurnBox" loading="lazy">
+        <h3>Sara Lin</h3>
+        <p>Designer UX/UI</p>
+      </div>
+      <div class="member">
+        <img src="dev3.jpg" alt="Mark Rivera, engenheiro de segurança do BurnBox" loading="lazy">
+        <h3>Mark Rivera</h3>
+        <p>Engenheiro de Segurança</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="help">
+    <h2 class="section-title">Perguntas Frequentes</h2>
+    <div class="faq-container">
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          O BurnBox é realmente gratuito?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Sim, o BurnBox é completamente gratuito. Acreditamos que a privacidade deve ser acessível a todos.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Como funciona a autodestruição de mensagens?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Cada mensagem tem um temporizador que começa a contar quando é enviada. Após ser lida pelo destinatário, a mensagem é automaticamente excluída de nossos servidores.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Vocês armazenam algum dado pessoal?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Não coletamos ou armazenamos informações pessoais identificáveis. Usamos identificadores anônimos para as sessões de chat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2 class="section-title">Contato</h2>
+    <p>Precisa de ajuda ou quer contribuir com o BurnBox? Nossa comunidade e documentação irão guiá-lo em cada etapa de configuração e uso. Entre em contato conosco para parcerias ou consultas técnicas.</p>
+    <div class="cta-container">
+      <a href="mailto:support@burnbox.app" class="cta-button secondary-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+        E-mail: support@burnbox.app
+      </a>
+      <a href="https://t.me/BurnBoxSupport" class="cta-button" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.89-.89.56-2.45-1.83-3.57-2.98-5.79-4.78-.54-.45-.92-.68-.89-1.07.03-.38.43-.55.99-.4 1.78.57 4.67 1.77 5.19 1.9.23.06.45.03.62-.14.17-.17.22-.4.15-.62-.2-.67-3.61-3.57-4.9-4.83-.37-.35-.71-.53-1.02-.51-.28.01-.8.17-.8.17s-1.03.67-2.94 1.98c-.36.25-.69.37-1.01.36-.35 0-.95-.17-1.48-.31-.6-.16-1.07-.25-1.03-.53.03-.19.23-.38.67-.55 2.56-1.16 4.35-1.95 5.9-2.62 3.33-1.42 4.05-1.67 4.5-1.67.12 0 .38.03.55.2.14.14.18.33.2.58z"/>
+        </svg>
+        Telegram: @BurnBoxSupport
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="#privacy">Política de Privacidade</a>
+      <a href="#terms">Termos de Uso</a>
+      <a href="https://github.com/burnbox" target="_blank">GitHub</a>
+      <a href="#blog">Blog</a>
+    </div>
+    <p>© 2025 Projeto BurnBox — Privacidade. Segurança. Desaparecimento.</p>
+  </footer>
+
+  <script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        // Fecha todos os itens
+        document.querySelectorAll('.faq-item').forEach(el => {
+          el.classList.remove('active');
+          el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
+        
+        // Abre o item atual se não estava ativo
+        if (!isActive) {
+          item.classList.add('active');
+          button.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Smooth scroll para âncoras
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Adiciona indicadores de acessibilidade para elementos interativos
+    document.querySelectorAll('button, a').forEach(element => {
+      if (!element.hasAttribute('aria-label')) {
+        const text = element.textContent.trim();
+        if (text) {
+          element.setAttribute('aria-label', text);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
