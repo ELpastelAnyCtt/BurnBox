@@ -166,6 +166,11 @@ app.post('/api/salas/:id/mensagens', (req, res) => {
     sistema: false
   };
 
+  // Inicializar array de mensagens se não existir
+  if (!sala.mensagens) {
+    sala.mensagens = [];
+  }
+
   sala.mensagens.push(novaMensagem);
 
   // Atualizar preview da sala
