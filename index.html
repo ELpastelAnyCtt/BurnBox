@@ -1,552 +1,1740 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="BurnBox - Chat anônimo e seguro com mensagens autodestrutivas. Suas conversas desaparecem após serem lidas." />
-  <title>BurnBox - Chat Privado e Anônimo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <style>
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
-    }
-    
-    :root {
-      --primary-color: #FF4500;
-      --primary-dark: #CC3700;
-      --secondary-color: #FF6A00;
-      --bg-dark: #000;
-      --bg-card: #1E1E1E;
-      --text-light: #bbb;
-      --text-white: #fff;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-white);
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="BurnBox - Chat anônimo e seguro com mensagens autodestrutivas. Suas conversas desaparecem após serem lidas.">
+    <title>BurnBox - Chat Privado e Anônimo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-fundo-primaria: #000000;
+            --cor-fundo-secundaria: #0a0a0a;
+            --cor-fundo-terciaria: #111111;
+            --cor-destaque-primaria: #FF4500;
+            --cor-destaque-secundaria: #CC3700;
+            --cor-destaque-terciaria: #FF6A00;
+            --cor-texto-primaria: #c0c0c0;
+            --cor-texto-secundaria: #707070;
+            --cor-borda: #222222;
+            --cor-perigo: #cc3333;
+            --cor-alerta: #FF6A00;
+            --sombra: 0 2px 8px rgba(0, 0, 0, 0.9);
+            --sombra-leve: 0 1px 3px rgba(0, 0, 0, 0.8);
+        }
 
-    /* Header e Banner */
-    header {
-      position: relative;
-      width: 100%;
-      height: 90vh;
-      background: radial-gradient(circle at center, #1E1E1E 0%, #000 100%);
-      overflow: hidden;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+        }
 
-    .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      animation: slideAnimation 18s infinite;
-    }
+        body {
+            background-color: var(--cor-fundo-primaria);
+            color: var(--cor-texto-primaria);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .slide:nth-child(1) { background-image: url('banner1.jpg'); animation-delay: 0s; }
-    .slide:nth-child(2) { background-image: url('banner2.jpg'); animation-delay: 6s; }
-    .slide:nth-child(3) { background-image: url('banner3.jpg'); animation-delay: 12s; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
-    @keyframes slideAnimation {
-      0% { opacity: 0; }
-      10%, 30% { opacity: 1; }
-      40%, 100% { opacity: 0; }
-    }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--cor-borda);
+            margin-bottom: 15px;
+            position: relative;
+        }
 
-    .overlay {
-      position: absolute;
-      top: 0; 
-      left: 0;
-      width: 100%; 
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      padding: 0 20px;
-    }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
 
-    .overlay h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      color: var(--primary-color);
-      text-shadow: 0 0 20px var(--primary-color);
-      margin-bottom: 1rem;
-    }
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .overlay p {
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      max-width: 800px;
-      color: #ccc;
-      margin-bottom: 1.5rem;
-    }
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
 
-    .cta-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin-top: 1.5rem;
-    }
+        .menu-hamburguer {
+            background: none;
+            border: none;
+            color: var(--cor-texto-primaria);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
 
-    .cta-button {
-      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-      padding: 15px 40px;
-      color: var(--text-white);
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(255,69,0,0.6);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-size: 1.1rem;
-      border: none;
-      cursor: pointer;
-    }
+        .menu-hamburguer:hover {
+            background-color: var(--cor-fundo-terciaria);
+        }
 
-    .cta-button:hover, .cta-button:focus { 
-      transform: scale(1.05); 
-      box-shadow: 0 0 30px rgba(255,69,0,1); 
-    }
+        .menu-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--cor-fundo-secundaria);
+            border: 1px solid var(--cor-borda);
+            border-radius: 5px;
+            padding: 6px 0;
+            min-width: 160px;
+            box-shadow: var(--sombra);
+            z-index: 1000;
+            display: none;
+        }
 
-    .cta-button:active {
-      transform: scale(0.98);
-    }
+        .menu-dropdown.ativo {
+            display: block;
+        }
 
-    .secondary-button {
-      background: transparent;
-      border: 2px solid var(--primary-color);
-      box-shadow: none;
-    }
+        .menu-item {
+            width: 100%;
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            color: var(--cor-texto-primaria);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
 
-    .secondary-button:hover, .secondary-button:focus {
-      background: rgba(255, 69, 0, 0.1);
-    }
+        .menu-item:hover {
+            background-color: var(--cor-fundo-terciaria);
+        }
 
-    /* Seções de conteúdo */
-    section {
-      padding: 80px 8%;
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            color: var(--cor-destaque-primaria);
+        }
 
-    .section-title {
-      text-align: center;
-      color: var(--primary-color);
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      margin-bottom: 40px;
-      position: relative;
-    }
+        .logo-icone {
+            color: var(--cor-destaque-primaria);
+            font-size: 1.2rem;
+        }
 
-    .section-title::after {
-      content: '';
-      display: block;
-      width: 80px;
-      height: 3px;
-      background: var(--primary-color);
-      margin: 15px auto;
-      border-radius: 2px;
-    }
+        .barra-status {
+            display: flex;
+            gap: 10px;
+            font-size: 0.75rem;
+            color: var(--cor-texto-secundaria);
+        }
 
-    .about, .team, .help, .contact, .features {
-      text-align: center;
-      color: var(--text-light);
-      line-height: 1.8;
-    }
+        .item-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
-    .about p, .help p, .contact p {
-      max-width: 800px;
-      margin: 0 auto 30px;
-      font-size: 1.1rem;
-    }
+        .icone-status {
+            color: var(--cor-destaque-primaria);
+            font-size: 0.7rem;
+        }
 
-    /* Seção de recursos */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      margin-top: 50px;
-    }
+        .tela {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+        }
 
-    .feature-card {
-      background: var(--bg-card);
-      padding: 30px 20px;
-      border-radius: 10px;
-      transition: 0.3s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .tela.ativa {
+            display: flex;
+        }
 
-    .feature-card:hover { 
-      transform: translateY(-10px); 
-      box-shadow: 0 10px 20px rgba(255,69,0,0.2); 
-    }
+        /* Estilos de Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 15px;
+        }
 
-    .feature-icon {
-      font-size: 2.5rem;
-      color: var(--primary-color);
-      margin-bottom: 20px;
-    }
+        .conteudo-modal {
+            background-color: var(--cor-fundo-secundaria);
+            border: 1px solid var(--cor-borda);
+            border-radius: 6px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--sombra);
+            position: relative;
+        }
 
-    .feature-card h3 {
-      color: var(--text-white);
-      margin-bottom: 15px;
-      font-size: 1.3rem;
-    }
+        .cabecalho-modal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-    /* Equipe */
-    .team-members {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      margin-top: 40px;
-    }
+        .titulo-modal {
+            font-size: 1.1rem;
+            color: var(--cor-destaque-primaria);
+        }
 
-    .member {
-      background: var(--bg-card);
-      padding: 25px;
-      border-radius: 10px;
-      width: 220px;
-      transition: 0.3s;
-    }
+        .fechar-modal {
+            background: none;
+            border: none;
+            color: var(--cor-texto-secundaria);
+            font-size: 1rem;
+            cursor: pointer;
+        }
 
-    .member:hover { 
-      transform: translateY(-5px); 
-      box-shadow: 0 0 15px var(--primary-color); 
-    }
-    
-    .member img { 
-      width: 100px; 
-      height: 100px;
-      border-radius: 50%; 
-      margin-bottom: 15px;
-      object-fit: cover;
-      border: 2px solid var(--primary-color);
-    }
+        .fechar-modal:hover {
+            color: var(--cor-texto-primaria);
+        }
 
-    .member h3 {
-      color: var(--text-white);
-      margin-bottom: 5px;
-    }
+        .corpo-modal {
+            margin-bottom: 15px;
+        }
 
-    .member p {
-      color: var(--text-light);
-      font-size: 0.9rem;
-    }
+        .rodape-modal {
+            display: flex;
+            gap: 8px;
+        }
 
-    /* FAQ */
-    .faq-container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+        /* Tela de Lista de Salas */
+        .cabecalho-tela {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-    .faq-item {
-      margin-bottom: 15px;
-      border-radius: 8px;
-      overflow: hidden;
-      background: var(--bg-card);
-    }
+        .titulo-tela {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
 
-    .faq-question {
-      width: 100%;
-      padding: 20px;
-      text-align: left;
-      background: none;
-      border: none;
-      color: var(--text-white);
-      font-size: 1.1rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .botoes-acao {
+            display: flex;
+            gap: 8px;
+        }
 
-    .faq-question:focus {
-      outline: 2px solid var(--primary-color);
-      outline-offset: 2px;
-    }
+        .btn {
+            padding: 6px 10px;
+            background-color: var(--cor-fundo-terciaria);
+            border: 1px solid var(--cor-borda);
+            color: var(--cor-texto-primaria);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+        }
 
-    .faq-answer {
-      padding: 0 20px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
+        .btn:hover {
+            background-color: var(--cor-destaque-primaria);
+            color: var(--cor-fundo-primaria);
+        }
 
-    .faq-item.active .faq-answer {
-      padding: 0 20px 20px;
-      max-height: 500px;
-    }
+        .btn-primario {
+            background-color: var(--cor-destaque-primaria);
+            color: var(--cor-fundo-primaria);
+        }
 
-    /* Footer */
-    footer {
-      background: #111;
-      text-align: center;
-      padding: 40px;
-      color: #666;
-      font-size: 0.9rem;
-      border-top: 1px solid #222;
-    }
+        .btn-primario:hover {
+            background-color: var(--cor-destaque-secundaria);
+        }
 
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 20px;
-    }
+        .btn-perigo {
+            background-color: var(--cor-perigo);
+            color: white;
+        }
 
-    .footer-links a {
-      color: var(--text-light);
-      text-decoration: none;
-      transition: color 0.3s;
-    }
+        .btn-perigo:hover {
+            background-color: #b32b2b;
+        }
 
-    .footer-links a:hover, .footer-links a:focus {
-      color: var(--primary-color);
-    }
+        .btn-voltar {
+            background: none;
+            border: none;
+            color: var(--cor-texto-primaria);
+            padding: 5px 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+        }
 
-    /* Responsividade */
-    @media (max-width: 768px) {
-      section {
-        padding: 60px 5%;
-      }
-      
-      .cta-container {
-        flex-direction: column;
-        width: 100%;
-        max-width: 300px;
-      }
-      
-      .cta-button {
-        width: 100%;
-      }
-      
-      .footer-links {
-        flex-direction: column;
-        gap: 15px;
-      }
-    }
+        .btn-voltar:hover {
+            color: var(--cor-destaque-primaria);
+        }
 
-    /* Acessibilidade - foco melhorado */
-    a:focus, button:focus {
-      outline: 2px solid var(--primary-color);
-      outline-offset: 2px;
-    }
+        .lista-salas {
+            list-style: none;
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 12px;
+        }
 
-    /* Indicador de carregamento para imagens */
-    .loading {
-      background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-    }
+        .item-sala {
+            background-color: var(--cor-fundo-secundaria);
+            border: 1px solid var(--cor-borda);
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-  </style>
+        .item-sala:hover {
+            border-color: var(--cor-destaque-primaria);
+            transform: translateY(-1px);
+            box-shadow: var(--sombra-leve);
+        }
+
+        .cabecalho-sala {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .nome-sala {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .badge-sala {
+            background-color: var(--cor-destaque-primaria);
+            color: var(--cor-fundo-primaria);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .info-sala {
+            display: flex;
+            gap: 8px;
+            font-size: 0.7rem;
+            color: var(--cor-texto-secundaria);
+            margin-bottom: 3px;
+        }
+
+        .preview-sala {
+            font-size: 0.7rem;
+            color: var(--cor-texto-primaria);
+            opacity: 0.9;
+        }
+
+        /* Tela de Chat - Header Redesenhado */
+        .barra-cabecalho-chat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            background-color: var(--cor-fundo-secundaria);
+            border-bottom: 1px solid var(--cor-borda);
+            z-index: 1000;
+            box-shadow: var(--sombra-leve);
+            position: sticky;
+            top: 0;
+        }
+
+        .barra-cabecalho-chat .conteudo-central {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .barra-queima {
+            height: 3px;
+            background: linear-gradient(90deg, var(--cor-destaque-primaria), var(--cor-destaque-terciaria));
+            border-radius: 0 0 2px 2px;
+            transition: width 1s linear;
+            z-index: 10;
+            box-shadow: 0 0 3px rgba(255, 69, 0, 0.5);
+        }
+
+        .barra-queima-container {
+            width: 100%;
+            height: 3px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 2px 2px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .titulo-chat {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .temporizador-chat {
+            font-size: 0.7rem;
+            color: var(--cor-texto-secundaria);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .icone-temporizador {
+            color: var(--cor-alerta);
+            font-size: 0.65rem;
+        }
+
+        .acoes-chat {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-acao-chat {
+            background: none;
+            border: none;
+            color: var(--cor-texto-secundaria);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .btn-acao-chat:hover {
+            color: var(--cor-texto-primaria);
+            background-color: var(--cor-fundo-terciaria);
+        }
+
+        .btn-acao-chat.perigo:hover {
+            color: var(--cor-perigo);
+        }
+
+        .container-mensagens {
+            flex: 1;
+            overflow-y: auto;
+            padding: 5px;
+            border: 1px solid var(--cor-borda);
+            border-radius: 4px;
+            margin-bottom: 60px;
+            margin-top: 0;
+            max-height: calc(100vh - 130px);
+            background-color: var(--cor-fundo-secundaria);
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        .mensagem {
+            margin-bottom: 6px;
+            padding: 6px;
+            border-radius: 4px;
+            max-width: 85%;
+            animation: aparecer 0.2s ease;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mensagem.propria {
+            margin-left: auto;
+            background-color: rgba(255, 69, 0, 0.1);
+            border-left: 2px solid var(--cor-destaque-primaria);
+        }
+
+        .mensagem.outra {
+            background-color: var(--cor-fundo-terciaria);
+            border-right: 2px solid var(--cor-borda);
+        }
+
+        .mensagem-sistema {
+            background-color: rgba(255, 106, 0, 0.08);
+            border-left: 2px solid var(--cor-alerta);
+            max-width: 90%;
+            margin: 6px auto;
+            text-align: center;
+        }
+
+        .remetente-mensagem {
+            font-weight: 600;
+            margin-bottom: 2px;
+            font-size: 0.7rem;
+            color: var(--cor-destaque-primaria);
+        }
+
+        .texto-mensagem {
+            word-wrap: break-word;
+            line-height: 1.3;
+            font-size: 0.8rem;
+        }
+
+        .tempo-mensagem {
+            font-size: 0.55rem;
+            opacity: 0.7;
+            text-align: right;
+            margin-top: 2px;
+        }
+
+        .indicador-digitacao {
+            padding: 4px 8px;
+            font-style: italic;
+            color: var(--cor-texto-secundaria);
+            display: none;
+            font-size: 0.7rem;
+        }
+
+        .indicador-digitacao.ativa {
+            display: block;
+            animation: pulsar 1.5s infinite;
+        }
+
+        @keyframes pulsar {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .area-entrada {
+            display: flex;
+            gap: 5px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px 10px;
+            background-color: var(--cor-fundo-secundaria);
+            border-top: 1px solid var(--cor-borda);
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .area-entrada input {
+            flex: 1;
+            padding: 6px 8px;
+            background-color: var(--cor-fundo-terciaria);
+            border: 1px solid var(--cor-borda);
+            color: var(--cor-texto-primaria);
+            border-radius: 3px;
+            font-size: 0.75rem;
+        }
+
+        .area-entrada input:focus {
+            outline: none;
+            border-color: var(--cor-destaque-primaria);
+        }
+
+        .area-entrada button {
+            padding: 6px 10px;
+            background-color: var(--cor-destaque-primaria);
+            border: none;
+            color: var(--cor-fundo-primaria);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+        }
+
+        .area-entrada button:hover {
+            background-color: var(--cor-destaque-secundaria);
+        }
+
+        .area-entrada button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .area-entrada button:disabled:hover {
+            background-color: var(--cor-destaque-primaria);
+        }
+
+        /* Elementos de Formulário */
+        .grupo-form {
+            margin-bottom: 12px;
+        }
+
+        .rotulo-form {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        .controle-form {
+            width: 100%;
+            padding: 8px;
+            background-color: var(--cor-fundo-terciaria);
+            border: 1px solid var(--cor-borda);
+            color: var(--cor-texto-primaria);
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .controle-form:focus {
+            outline: none;
+            border-color: var(--cor-destaque-primaria);
+        }
+
+        .texto-form {
+            font-size: 0.75rem;
+            color: var(--cor-texto-secundaria);
+            margin-top: 4px;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge-primario {
+            background-color: var(--cor-destaque-primaria);
+            color: var(--cor-fundo-primaria);
+        }
+
+        .badge-secundario {
+            background-color: var(--cor-fundo-terciaria);
+            color: var(--cor-texto-primaria);
+        }
+
+        /* Perfil do Usuário */
+        .perfil-usuario {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            text-align: center;
+        }
+
+        .nome-usuario {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--cor-texto-primaria);
+        }
+
+        .contador-online {
+            font-size: 0.65rem;
+            color: var(--cor-texto-secundaria);
+        }
+
+        /* Estado Vazio */
+        .estado-vazio {
+            text-align: center;
+            padding: 30px 15px;
+            color: var(--cor-texto-secundaria);
+        }
+
+        .icone-vazio {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            color: var(--cor-borda);
+        }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .container {
+                padding: 8px;
+            }
+
+            .barra-status {
+                flex-direction: column;
+                gap: 3px;
+                align-items: flex-end;
+            }
+
+            .mensagem {
+                max-width: 95%;
+            }
+
+            .botoes-acao {
+                flex-direction: column;
+            }
+
+            .barra-cabecalho-chat {
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .conteudo-modal {
+                padding: 12px;
+            }
+            
+            .btn-voltar span {
+                display: none;
+            }
+        }
+
+        /* Melhorias de responsividade para mobile */
+        @media (max-width: 480px) {
+            .container {
+                padding: 5px;
+            }
+            
+            header {
+                padding: 8px 0;
+                flex-wrap: wrap;
+            }
+            
+            .header-center {
+                position: static;
+                transform: none;
+                order: 3;
+                width: 100%;
+                margin-top: 8px;
+                justify-content: center;
+            }
+            
+            .barra-status {
+                flex-direction: row;
+                justify-content: center;
+                width: 100%;
+                margin-top: 5px;
+            }
+            
+            .logo span {
+                font-size: 1rem;
+            }
+            
+            .logo-icone {
+                font-size: 1.1rem;
+            }
+            
+            /* Modal em mobile */
+            .conteudo-modal {
+                margin: 10px;
+                padding: 15px;
+                width: calc(100% - 20px);
+            }
+            
+            /* Lista de salas em mobile */
+            .item-sala {
+                padding: 8px;
+                min-height: 60px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .nome-sala {
+                font-size: 0.85rem;
+            }
+            
+            .info-sala, .preview-sala {
+                font-size: 0.65rem;
+            }
+            
+            /* Chat em mobile */
+            .barra-cabecalho-chat {
+                padding: 6px 8px;
+            }
+            
+            .titulo-chat {
+                font-size: 0.8rem;
+            }
+            
+            .temporizador-chat {
+                font-size: 0.65rem;
+            }
+            
+            .container-mensagens {
+                margin-bottom: 70px;
+                max-height: calc(100vh - 140px);
+            }
+            
+            .mensagem {
+                max-width: 90%;
+                padding: 5px;
+            }
+            
+            .area-entrada {
+                padding: 10px 8px;
+            }
+            
+            .area-entrada input {
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .area-entrada button {
+                padding: 8px 12px;
+                min-width: 60px;
+            }
+            
+            /* Ajustes no menu dropdown */
+            .menu-dropdown {
+                min-width: 140px;
+                right: -10px;
+            }
+            
+            .menu-item {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+            
+            /* Ajustes nos botões */
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .btn-voltar span {
+                display: inline !important;
+            }
+
+            /* Splash screen em mobile */
+            #telaSplash .logo {
+                font-size: 1.5rem;
+            }
+            
+            #telaSplash .logo-icone {
+                font-size: 2rem;
+            }
+        }
+
+        /* Melhorias para tablets */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .container {
+                padding: 8px;
+                max-width: 95%;
+            }
+            
+            .mensagem {
+                max-width: 80%;
+            }
+        }
+
+        /* Garantir que elementos críticos sejam sempre visíveis */
+        .barra-cabecalho-chat {
+            position: sticky;
+            top: 0;
+            background-color: var(--cor-fundo-secundaria);
+        }
+
+        .area-entrada {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* Melhorar a área de toque para botões em mobile */
+        @media (max-width: 768px) {
+            .menu-hamburguer, 
+            .btn-acao-chat, 
+            .btn-voltar,
+            .btn {
+                min-height: 44px;
+                min-width: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .item-sala {
+                min-height: 60px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+
+        /* Prevenir zoom em inputs em iOS */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+
+        /* Melhorar scroll em mobile */
+        .container-mensagens, .lista-salas {
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
-
 <body>
-  <header>
-    <div class="slide"></div>
-    <div class="slide"></div>
-    <div class="slide"></div>
-    <div class="overlay">
-      <h1>BurnBox</h1>
-      <p>Chat anônimo, seguro e com mensagens autodestrutivas — redesenhado para a era digital. Suas conversas desaparecem após serem lidas, sem deixar rastros.</p>
-      <div class="cta-container">
-        <a href="https://t.me/BurnBoxbot" class="cta-button" target="_blank" aria-label="Acesse o BurnBox no Telegram">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.89-.89.56-2.45-1.83-3.57-2.98-5.79-4.78-.54-.45-.92-.68-.89-1.07.03-.38.43-.55.99-.4 1.78.57 4.67 1.77 5.19 1.9.23.06.45.03.62-.14.17-.17.22-.4.15-.62-.2-.67-3.61-3.57-4.9-4.83-.37-.35-.71-.53-1.02-.51-.28.01-.8.17-.8.17s-1.03.67-2.94 1.98c-.36.25-.69.37-1.01.36-.35 0-.95-.17-1.48-.31-.6-.16-1.07-.25-1.03-.53.03-.19.23-.38.67-.55 2.56-1.16 4.35-1.95 5.9-2.62 3.33-1.42 4.05-1.67 4.5-1.67.12 0 .38.03.55.2.14.14.18.33.2.58z"/>
-          </svg>
-          Acessar MiniApp Telegram 
-        </a>
-        <a href="#features" class="cta-button secondary-button" aria-label="Saiba mais sobre os recursos do BurnBox">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-          </svg>
-          Saiba Mais
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <section class="about">
-    <h2 class="section-title">Como Funciona</h2>
-    <p>O BurnBox é um sistema de chat focado em privacidade onde as mensagens desaparecem após serem lidas. Todos os dados são criptografados e armazenados temporariamente em um container digital de queima — suas palavras, seu controle, nenhum rastro deixado para trás.</p>
-    <p>Utilizamos criptografia de ponta a ponta e não armazenamos metadados de conversas. Cada mensagem tem um tempo de vida limitado, garantindo que suas comunicações sejam tão efêmeras quanto uma conversa pessoal.</p>
-  </section>
-
-  <section class="features" id="features">
-    <h2 class="section-title">Recursos Principais</h2>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🔒</div>
-        <h3>Privacidade Total</h3>
-        <p>Mensagens criptografadas de ponta a ponta. Nem mesmo nós temos acesso ao conteúdo das suas conversas.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔥</div>
-        <h3>Autodestruição</h3>
-        <p>Mensagens desaparecem automaticamente após serem lidas. Você controla o tempo de vida de cada conversa.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">👤</div>
-        <h3>Anonimato</h3>
-        <p>Não exigimos informações pessoais. Use pseudônimos e mantenha sua identidade protegida.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🚀</div>
-        <h3>Fácil Uso</h3>
-        <p>Interface intuitiva dentro do Telegram. Nenhuma instalação complicada ou configuração técnica necessária.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="team">
-    <h2 class="section-title">Conheça a Equipe</h2>
-    <div class="team-members">
-      <div class="member">
-        <img src="dev1.jpg" alt="Alex Carter, desenvolvedor principal do BurnBox" loading="lazy">
-        <h3>Alex Carter</h3>
-        <p>Desenvolvedor Principal</p>
-      </div>
-      <div class="member">
-        <img src="dev2.jpg" alt="Sara Lin, designer de UX/UI do BurnBox" loading="lazy">
-        <h3>Sara Lin</h3>
-        <p>Designer UX/UI</p>
-      </div>
-      <div class="member">
-        <img src="dev3.jpg" alt="Mark Rivera, engenheiro de segurança do BurnBox" loading="lazy">
-        <h3>Mark Rivera</h3>
-        <p>Engenheiro de Segurança</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="help">
-    <h2 class="section-title">Perguntas Frequentes</h2>
-    <div class="faq-container">
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          O BurnBox é realmente gratuito?
-          <span>+</span>
-        </button>
-        <div class="faq-answer">
-          <p>Sim, o BurnBox é completamente gratuito. Acreditamos que a privacidade deve ser acessível a todos.</p>
+    <!-- Tela de Splash -->
+    <div id="telaSplash" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--cor-fundo-primaria); display: flex; justify-content: center; align-items: center; z-index: 2000;">
+        <div class="logo" style="font-size: 2rem;">
+            <i class="fas fa-fire logo-icone" style="font-size: 3rem;"></i>
+            <span>BurnBox</span>
         </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          Como funciona a autodestruição de mensagens?
-          <span>+</span>
-        </button>
-        <div class="faq-answer">
-          <p>Cada mensagem tem um temporizador que começa a contar quando é enviada. Após ser lida pelo destinatário, a mensagem é automaticamente excluída de nossos servidores.</p>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-fire logo-icone"></i>
+                    <span>BurnBox</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="perfil-usuario" id="perfilUsuario">
+                    <div class="nome-usuario" id="apelidoUsuario">Anônimo</div>
+                    <div class="contador-online">Online: <span id="contadorOnline">28</span></div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="menu-hamburguer" id="botaoMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <button class="menu-item" id="menuPerfil">
+                        <i class="fas fa-user-cog"></i> Perfil
+                    </button>
+                    <button class="menu-item" id="menuCriarSala">
+                        <i class="fas fa-plus"></i> Criar Sala
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Modal de Perfil do Usuário -->
+        <div class="modal" id="modalUsuario">
+            <div class="conteudo-modal">
+                <div class="cabecalho-modal">
+                    <h2 class="titulo-modal">Seu Perfil Anônimo</h2>
+                    <button class="fechar-modal" id="fecharModalUsuario">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="corpo-modal">
+                    <div class="grupo-form">
+                        <div class="rotulo-form">Seu ID Anônimo</div>
+                        <div class="perfil-usuario">
+                            <div class="nome-usuario" id="apelidoModalUsuario">Anônimo</div>
+                            <div class="status-usuario">Gerado automaticamente</div>
+                        </div>
+                        <div class="texto-form">
+                            Este ID é gerado aleatoriamente e não pode ser alterado.
+                            Para anonimato completo, delete sua conta para obter um novo ID.
+                        </div>
+                    </div>
+                    <div class="grupo-form">
+                        <div class="rotulo-form">Seu Status de Privacidade</div>
+                        <div>
+                            <span class="badge badge-primario">Totalmente Anônimo</span>
+                            <span class="badge badge-secundario">Sem Rastreamento</span>
+                            <span class="badge badge-secundario">Criptografado</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rodape-modal">
+                    <button class="btn btn-perigo" id="deletarConta">
+                        <i class="fas fa-trash"></i> Deletar Conta
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          Vocês armazenam algum dado pessoal?
-          <span>+</span>
-        </button>
-        <div class="faq-answer">
-          <p>Não coletamos ou armazenamos informações pessoais identificáveis. Usamos identificadores anônimos para as sessões de chat.</p>
+
+        <!-- Modal de Criar Sala -->
+        <div class="modal" id="modalCriarSala">
+            <div class="conteudo-modal">
+                <div class="cabecalho-modal">
+                    <h2 class="titulo-modal">Criar Nova Sala</h2>
+                    <button class="fechar-modal" id="fecharModalCriarSala">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="corpo-modal">
+                    <div class="grupo-form">
+                        <div class="rotulo-form">Nome da Sala</div>
+                        <input type="text" class="controle-form" id="entradaNomeSala" value="Sala Anônima" readonly>
+                        <div class="texto-form">O nome da sala é gerado automaticamente para anonimato</div>
+                    </div>
+                    <div class="grupo-form">
+                        <div class="rotulo-form">Tempo de Auto-Destruição</div>
+                        <select class="controle-form" id="selecionarTempoDestruicao">
+                            <option value="0.5">30 segundos</option>
+                            <option value="1">1 minuto</option>
+                            <option value="5">5 minutos</option>
+                            <option value="30">30 minutos</option>
+                            <option value="60">1 hora</option>
+                            <option value="360" selected>6 horas</option>
+                            <option value="0">Infinito</option>
+                        </select>
+                        <div class="texto-form">Após este tempo de inatividade, a sala será automaticamente deletada</div>
+                    </div>
+                </div>
+                <div class="rodape-modal">
+                    <button class="btn" id="cancelarCriarSala">Cancelar</button>
+                    <button class="btn btn-primario" id="confirmarCriarSala">Criar Sala</button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="contact">
-    <h2 class="section-title">Contato</h2>
-    <p>Precisa de ajuda ou quer contribuir com o BurnBox? Nossa comunidade e documentação irão guiá-lo em cada etapa de configuração e uso. Entre em contato conosco para parcerias ou consultas técnicas.</p>
-    <div class="cta-container">
-      <a href="mailto:support@burnbox.app" class="cta-button secondary-button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-        </svg>
-        E-mail: support@burnbox.app
-      </a>
-      <a href="https://t.me/BurnBoxSupport" class="cta-button" target="_blank">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.89-.89.56-2.45-1.83-3.57-2.98-5.79-4.78-.54-.45-.92-.68-.89-1.07.03-.38.43-.55.99-.4 1.78.57 4.67 1.77 5.19 1.9.23.06.45.03.62-.14.17-.17.22-.4.15-.62-.2-.67-3.61-3.57-4.9-4.83-.37-.35-.71-.53-1.02-.51-.28.01-.8.17-.8.17s-1.03.67-2.94 1.98c-.36.25-.69.37-1.01.36-.35 0-.95-.17-1.48-.31-.6-.16-1.07-.25-1.03-.53.03-.19.23-.38.67-.55 2.56-1.16 4.35-1.95 5.9-2.62 3.33-1.42 4.05-1.67 4.5-1.67.12 0 .38.03.55.2.14.14.18.33.2.58z"/>
-        </svg>
-        Telegram: @BurnBoxSupport
-      </a>
-    </div>
-  </section>
+        <!-- Tela de Lista de Salas -->
+        <div class="tela ativa" id="telaListaSalas">
+            <ul class="lista-salas" id="listaSalas">
+                <!-- Salas serão carregadas aqui -->
+            </ul>
+        </div>
 
-  <footer>
-    <div class="footer-links">
-      <a href="#privacy">Política de Privacidade</a>
-      <a href="#terms">Termos de Uso</a>
-      <a href="https://github.com/burnbox" target="_blank">GitHub</a>
-      <a href="#blog">Blog</a>
+        <!-- Tela de Chat -->
+        <div class="tela" id="telaChat">
+            <div class="barra-cabecalho-chat">
+                <button class="btn-voltar" id="voltarListaSalas">
+                    <i class="fas fa-arrow-left"></i> <span>Voltar</span>
+                </button>
+                <div class="conteudo-central">
+                    <h2 class="titulo-chat" id="nomeSalaAtiva">Sala</h2>
+                    <div class="temporizador-chat">
+                        <i class="fas fa-clock icone-temporizador"></i>
+                        <span id="temporizadorChat">06:00:00</span>
+                    </div>
+                </div>
+                <div class="acoes-chat">
+                    <button class="btn-acao-chat perigo" id="botaoDeletarSala" title="Deletar Sala">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="barra-queima-container">
+                <div class="barra-queima" id="barraQueima"></div>
+            </div>
+            <div class="container-mensagens" id="containerMensagens">
+                <!-- Mensagens serão carregadas aqui -->
+            </div>
+            <div class="indicador-digitacao" id="indicadorDigitacao">
+                <i class="fas fa-pencil-alt"></i> Alguém está digitando...
+            </div>
+            <div class="area-entrada">
+                <input type="text" id="entradaMensagem" placeholder="Digite sua mensagem anônima..." maxlength="500">
+                <button id="enviarMensagem">
+                    <i class="fas fa-paper-plane"></i> Enviar
+                </button>
+            </div>
+        </div>
     </div>
-    <p>© 2025 Projeto BurnBox — Privacidade. Segurança. Desaparecimento.</p>
-  </footer>
 
-  <script>
-    // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(button => {
-      button.addEventListener('click', () => {
-        const item = button.parentElement;
-        const isActive = item.classList.contains('active');
-        
-        // Fecha todos os itens
-        document.querySelectorAll('.faq-item').forEach(el => {
-          el.classList.remove('active');
-          el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+    <script>
+        // Estado da Aplicação
+        const estado = {
+            apelido: '',
+            salaAtiva: null,
+            salas: [],
+            mensagens: {},
+            usuariosOnline: 28,
+            temporizadorDigitacao: null,
+            temporizadorChat: null,
+            expiracaoChat: null,
+            salasUsuario: {}
+        };
+
+        // Elementos DOM
+        const elementos = {
+            // Splash screen
+            telaSplash: document.getElementById('telaSplash'),
+
+            // Modais
+            modalUsuario: document.getElementById('modalUsuario'),
+            modalCriarSala: document.getElementById('modalCriarSala'),
+
+            // Header e menu
+            botaoMenu: document.getElementById('botaoMenu'),
+            menuDropdown: document.getElementById('menuDropdown'),
+            menuPerfil: document.getElementById('menuPerfil'),
+            menuCriarSala: document.getElementById('menuCriarSala'),
+
+            // Perfil do usuário
+            perfilUsuario: document.getElementById('perfilUsuario'),
+            apelidoUsuario: document.getElementById('apelidoUsuario'),
+            apelidoModalUsuario: document.getElementById('apelidoModalUsuario'),
+
+            // Botões
+            fecharModalUsuario: document.getElementById('fecharModalUsuario'),
+            fecharModalCriarSala: document.getElementById('fecharModalCriarSala'),
+            deletarConta: document.getElementById('deletarConta'),
+            cancelarCriarSala: document.getElementById('cancelarCriarSala'),
+            confirmarCriarSala: document.getElementById('confirmarCriarSala'),
+            voltarListaSalas: document.getElementById('voltarListaSalas'),
+            botaoDeletarSala: document.getElementById('botaoDeletarSala'),
+
+            // Elementos de chat
+            telaListaSalas: document.getElementById('telaListaSalas'),
+            telaChat: document.getElementById('telaChat'),
+            listaSalas: document.getElementById('listaSalas'),
+            containerMensagens: document.getElementById('containerMensagens'),
+            entradaMensagem: document.getElementById('entradaMensagem'),
+            enviarMensagem: document.getElementById('enviarMensagem'),
+            indicadorDigitacao: document.getElementById('indicadorDigitacao'),
+            temporizadorChat: document.getElementById('temporizadorChat'),
+            barraQueima: document.getElementById('barraQueima'),
+            contadorOnline: document.getElementById('contadorOnline'),
+            nomeSalaAtiva: document.getElementById('nomeSalaAtiva'),
+
+            // Elementos de formulário
+            entradaNomeSala: document.getElementById('entradaNomeSala'),
+            selecionarTempoDestruicao: document.getElementById('selecionarTempoDestruicao')
+        };
+
+        // Inicializar a aplicação
+        async function inicializar() {
+            await carregarDoArmazenamento();
+            configurarEventos();
+
+            // Mostrar splash screen por 3 segundos
+            setTimeout(() => {
+                elementos.telaSplash.style.display = 'none';
+                mostrarListaSalas();
+            }, 3000);
+
+            atualizarContadorOnline();
+        }
+
+        // Carregar dados do localStorage
+        async function carregarDoArmazenamento() {
+            const apelidoSalvo = localStorage.getItem('burnBox_apelido');
+            const salasSalvas = localStorage.getItem('burnBox_salas');
+            const mensagensSalvas = localStorage.getItem('burnBox_mensagens');
+            const salasUsuarioSalvas = localStorage.getItem('burnBox_salasUsuario');
+            
+            // Gerar apelido aleatório se não existir
+            if (!apelidoSalvo) {
+                try {
+                    const resposta = await fetch('/api/gerar-apelido');
+                    const dados = await resposta.json();
+                    estado.apelido = dados.apelido;
+                } catch (erro) {
+                    estado.apelido = gerarApelidoAleatorio();
+                }
+                localStorage.setItem('burnBox_apelido', estado.apelido);
+            } else {
+                estado.apelido = apelidoSalvo;
+            }
+            
+            // Atualizar UI com informações do usuário
+            atualizarInformacoesUsuario();
+            
+            // Carregar salas do servidor
+            try {
+                const resposta = await fetch('/api/salas');
+                const dados = await resposta.json();
+                if (dados.sucesso) {
+                    estado.salas = dados.salas;
+                    estado.usuariosOnline = dados.usuariosOnline;
+                }
+            } catch (erro) {
+                console.error('Erro ao carregar salas:', erro);
+                // Usar dados padrão se a API falhar
+                estado.salas = [
+                    { 
+                        id: 'sala1', 
+                        nome: 'Chat Geral BurnBox', 
+                        usuarios: 15, 
+                        preview: 'Bem-vindo ao chat geral BurnBox!', 
+                        tempoAutoDestruicao: 0,
+                        criador: null,
+                        fixa: true
+                    },
+                    { 
+                        id: 'sala2', 
+                        nome: 'Discussões Livres', 
+                        usuarios: 23, 
+                        preview: 'Converse sobre qualquer coisa aqui...', 
+                        tempoAutoDestruicao: 60,
+                        criador: null 
+                    },
+                    { 
+                        id: 'sala3', 
+                        nome: 'Confissões Anônimas', 
+                        usuarios: 47, 
+                        preview: 'Compartilhe seus segredos anonimamente...', 
+                        tempoAutoDestruicao: 60,
+                        criador: null 
+                    }
+                ];
+            }
+            
+            if (salasUsuarioSalvas) {
+                estado.salasUsuario = JSON.parse(salasUsuarioSalvas);
+            }
+        }
+
+        // Gerar apelido aleatório (fallback)
+        function gerarApelidoAleatorio() {
+            const numeroAleatorio = Math.floor(Math.random() * 9000) + 1000;
+            return `BURN${numeroAleatorio}#`;
+        }
+
+        // Atualizar informações do usuário na UI
+        function atualizarInformacoesUsuario() {
+            elementos.apelidoUsuario.textContent = estado.apelido;
+            elementos.apelidoModalUsuario.textContent = estado.apelido;
+        }
+
+        // Configurar event listeners
+        function configurarEventos() {
+            // Controles de menu hamburguer
+            elementos.botaoMenu.addEventListener('click', toggleMenu);
+            elementos.menuPerfil.addEventListener('click', () => {
+                esconderMenu();
+                mostrarModal(elementos.modalUsuario);
+            });
+            elementos.menuCriarSala.addEventListener('click', () => {
+                esconderMenu();
+                mostrarModal(elementos.modalCriarSala);
+            });
+
+            // Fechar menu ao clicar fora
+            document.addEventListener('click', (e) => {
+                if (!elementos.botaoMenu.contains(e.target) && !elementos.menuDropdown.contains(e.target)) {
+                    esconderMenu();
+                }
+            });
+
+            // Controles de modal
+            elementos.fecharModalUsuario.addEventListener('click', () => esconderModal(elementos.modalUsuario));
+            elementos.fecharModalCriarSala.addEventListener('click', () => esconderModal(elementos.modalCriarSala));
+            elementos.cancelarCriarSala.addEventListener('click', () => esconderModal(elementos.modalCriarSala));
+            elementos.deletarConta.addEventListener('click', deletarConta);
+            elementos.confirmarCriarSala.addEventListener('click', criarNovaSala);
+
+            // Funcionalidade de chat
+            elementos.enviarMensagem.addEventListener('click', enviarMensagem);
+            elementos.entradaMensagem.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') enviarMensagem();
+            });
+            elementos.entradaMensagem.addEventListener('input', manipularDigitacao);
+            elementos.voltarListaSalas.addEventListener('click', mostrarListaSalas);
+            elementos.botaoDeletarSala.addEventListener('click', deletarSalaAtual);
+
+            // Gerar nome aleatório de sala quando o modal abrir
+            elementos.modalCriarSala.addEventListener('click', async () => {
+                try {
+                    const resposta = await fetch('/api/gerar-nome-sala');
+                    const dados = await resposta.json();
+                    if (dados.sucesso) {
+                        elementos.entradaNomeSala.value = dados.nomeSala;
+                    }
+                } catch (erro) {
+                    elementos.entradaNomeSala.value = gerarNomeSalaAleatorio();
+                }
+            });
+
+            // Atualizar contador online periodicamente
+            setInterval(atualizarContadorOnline, 30000);
+        }
+
+        // Gerar nome aleatório de sala (fallback)
+        function gerarNomeSalaAleatorio() {
+            const prefixos = ['Privada', 'Secreta', 'Anônima', 'Oculta', 'Segura', 'Criptografada', 'Fantasma', 'Silenciosa'];
+            const sufixos = ['Sala', 'Espaço', 'Lugar', 'Canal', 'Central', 'Zona', 'Canto', 'Lounge'];
+            const prefixoAleatorio = prefixos[Math.floor(Math.random() * prefixos.length)];
+            const sufixoAleatorio = sufixos[Math.floor(Math.random() * sufixos.length)];
+            const idAleatorio = Math.floor(Math.random() * 9000) + 1000;
+            return `${prefixoAleatorio} ${sufixoAleatorio} ${idAleatorio}`;
+        }
+
+        // Mostrar modal
+        function mostrarModal(modal) {
+            modal.style.display = 'flex';
+        }
+
+        // Esconder modal
+        function esconderModal(modal) {
+            modal.style.display = 'none';
+        }
+
+        // Toggle menu hamburguer
+        function toggleMenu() {
+            elementos.menuDropdown.classList.toggle('ativo');
+        }
+
+        // Esconder menu
+        function esconderMenu() {
+            elementos.menuDropdown.classList.remove('ativo');
+        }
+
+        // Criar nova sala
+        async function criarNovaSala() {
+            const nomeSala = elementos.entradaNomeSala.value;
+            const tempoDestruicao = parseFloat(elementos.selecionarTempoDestruicao.value);
+            
+            try {
+                const resposta = await fetch('/api/salas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nome: nomeSala,
+                        tempoAutoDestruicao: tempoDestruicao,
+                        criador: estado.apelido
+                    })
+                });
+                
+                const dados = await resposta.json();
+                
+                if (dados.sucesso) {
+                    esconderModal(elementos.modalCriarSala);
+                    await mostrarListaSalas();
+                    
+                    // Abrir a sala recém-criada
+                    setTimeout(() => abrirSala(dados.sala.id), 100);
+                } else {
+                    alert('Erro ao criar sala: ' + dados.erro);
+                }
+            } catch (erro) {
+                console.error('Erro ao criar sala:', erro);
+                alert('Erro ao criar sala. Verifique sua conexão.');
+            }
+        }
+
+        // Deletar conta
+        function deletarConta() {
+            if (confirm('Tem certeza que deseja deletar sua conta? Seu ID anônimo atual será perdido e um novo será gerado.')) {
+                // Remover dados do usuário
+                localStorage.removeItem('burnBox_apelido');
+                localStorage.removeItem('burnBox_salasUsuario');
+                
+                // Gerar novo apelido
+                estado.apelido = gerarApelidoAleatorio();
+                estado.salasUsuario = {};
+                
+                localStorage.setItem('burnBox_apelido', estado.apelido);
+                atualizarInformacoesUsuario();
+                esconderModal(elementos.modalUsuario);
+                
+                // Mostrar confirmação
+                alert('Conta deletada. Seu novo ID anônimo é: ' + estado.apelido);
+            }
+        }
+
+        // Mostrar lista de salas
+        async function mostrarListaSalas() {
+            esconderTodasTelas();
+            elementos.telaListaSalas.classList.add('ativa');
+            
+            // Limpar lista atual
+            elementos.listaSalas.innerHTML = '';
+            
+            // Carregar salas do servidor
+            try {
+                const resposta = await fetch('/api/salas');
+                const dados = await resposta.json();
+                if (dados.sucesso) {
+                    estado.salas = dados.salas;
+                    estado.usuariosOnline = dados.usuariosOnline;
+                    atualizarContadorOnline();
+                }
+            } catch (erro) {
+                console.error('Erro ao carregar salas:', erro);
+            }
+            
+            // Adicionar salas à lista
+            if (estado.salas.length === 0) {
+                elementos.listaSalas.innerHTML = `
+                    <div class="estado-vazio">
+                        <div class="icone-vazio">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Nenhuma Sala Disponível</h3>
+                        <p>Crie sua primeira sala anônima para começar.</p>
+                    </div>
+                `;
+            } else {
+                estado.salas.forEach(sala => {
+                    const elementoSala = document.createElement('li');
+                    elementoSala.className = 'item-sala';
+                    
+                    // Verificar se esta sala foi criada pelo usuário atual
+                    const salaDoUsuario = estado.salasUsuario[estado.apelido] === sala.id;
+                    
+                    const ehOficial = sala.fixa;
+                    elementoSala.innerHTML = `
+                        <div class="cabecalho-sala">
+                            <div class="nome-sala">${ehOficial ? '<i class="fas fa-crown" style="color: gold; margin-right: 5px;"></i>' : ''}${sala.nome}</div>
+                            ${salaDoUsuario ? '<div class="badge-sala">Sua Sala</div>' : ''}
+                            ${ehOficial ? '<div class="badge-sala" style="background-color: #ffcc00; color: #000;">Oficial</div>' : ''}
+                        </div>
+                        <div class="info-sala">
+                            <span><i class="fas fa-users"></i> ${sala.usuarios} usuários</span>
+                            <span><i class="fas fa-clock"></i> ${formatarTempoAutoDestruicao(sala.tempoAutoDestruicao)}</span>
+                        </div>
+                        <div class="preview-sala">${sala.preview}</div>
+                    `;
+                    
+                    elementoSala.addEventListener('click', () => abrirSala(sala.id));
+                    elementos.listaSalas.appendChild(elementoSala);
+                });
+            }
+            
+            // Rolar para o topo após carregar
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        }
+
+        // Abrir sala
+        async function abrirSala(salaId) {
+            esconderTodasTelas();
+            elementos.telaChat.classList.add('ativa');
+
+            estado.salaAtiva = salaId;
+            const sala = estado.salas.find(s => s.id === salaId);
+            elementos.nomeSalaAtiva.textContent = sala.nome;
+
+            // Mostrar botão de deletar apenas se este usuário criou a sala e não é fixa/oficial
+            const salaDoUsuario = estado.salasUsuario[estado.apelido] === salaId;
+            const ehFixa = sala.fixa;
+            elementos.botaoDeletarSala.style.display = (salaDoUsuario && !ehFixa) ? 'block' : 'none';
+
+            // Carregar mensagens
+            await carregarMensagens(salaId);
+
+            // Iniciar temporizador do chat com tempo específico
+            iniciarTemporizadorChat(sala.tempoAutoDestruicao);
+
+            // Focar na entrada de mensagem
+            elementos.entradaMensagem.focus();
+        }
+
+        // Carregar mensagens
+        async function carregarMensagens(salaId) {
+            elementos.containerMensagens.innerHTML = '';
+            
+            try {
+                const resposta = await fetch(`/api/salas/${salaId}/mensagens`);
+                const dados = await resposta.json();
+                
+                if (dados.sucesso) {
+                    dados.mensagens.forEach(mensagem => {
+                        adicionarMensagemAoChat(mensagem, salaId);
+                    });
+                }
+            } catch (erro) {
+                console.error('Erro ao carregar mensagens:', erro);
+                // Usar mensagens locais em caso de erro
+                if (estado.mensagens[salaId]) {
+                    estado.mensagens[salaId].forEach(mensagem => {
+                        adicionarMensagemAoChat(mensagem, salaId);
+                    });
+                }
+            }
+            
+            // Rolar para a mensagem mais recente
+            rolarParaBaixo();
+        }
+
+        // Adicionar mensagem ao chat
+        function adicionarMensagemAoChat(mensagem, salaId) {
+            const elementoMensagem = document.createElement('div');
+            const ehMensagemPropria = mensagem.remetente === estado.apelido;
+            const ehMensagemSistema = mensagem.sistema;
+            
+            if (ehMensagemSistema) {
+                elementoMensagem.className = 'mensagem mensagem-sistema';
+            } else {
+                elementoMensagem.className = `mensagem ${ehMensagemPropria ? 'propria' : 'outra'}`;
+            }
+            
+            elementoMensagem.innerHTML = `
+                ${!ehMensagemSistema ? `<div class="remetente-mensagem">${ehMensagemPropria ? 'Você' : mensagem.remetente}</div>` : ''}
+                <div class="texto-mensagem">${mensagem.texto}</div>
+                <div class="tempo-mensagem">${formatarTempo(mensagem.tempo)}</div>
+            `;
+            
+            elementos.containerMensagens.appendChild(elementoMensagem);
+        }
+
+        // Enviar mensagem
+        async function enviarMensagem() {
+            const texto = elementos.entradaMensagem.value.trim();
+            if (!texto || !estado.salaAtiva) return;
+            
+            try {
+                const resposta = await fetch(`/api/salas/${estado.salaAtiva}/mensagens`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        remetente: estado.apelido,
+                        texto: texto
+                    })
+                });
+                
+                const dados = await resposta.json();
+                
+                if (dados.sucesso) {
+                    // Adicionar ao DOM
+                    adicionarMensagemAoChat(dados.mensagem, estado.salaAtiva);
+                    
+                    // Limpar entrada
+                    elementos.entradaMensagem.value = '';
+                    
+                    // Atualizar preview da sala
+                    atualizarPreviewSala(estado.salaAtiva, texto);
+                    
+                    // Resetar temporizador do chat (se não for infinito)
+                    const sala = estado.salas.find(s => s.id === estado.salaAtiva);
+                    if (sala.tempoAutoDestruicao > 0) {
+                        resetarTemporizadorChat();
+                    }
+                    
+                    // Rolar para a mensagem mais recente
+                    rolarParaBaixo();
+                } else {
+                    alert('Erro ao enviar mensagem: ' + dados.erro);
+                }
+            } catch (erro) {
+                console.error('Erro ao enviar mensagem:', erro);
+                alert('Erro ao enviar mensagem. Verifique sua conexão.');
+            }
+        }
+
+        // Atualizar preview da sala
+        function atualizarPreviewSala(salaId, ultimaMensagem) {
+            const sala = estado.salas.find(s => s.id === salaId);
+            if (sala) {
+                sala.preview = ultimaMensagem.length > 50 ? 
+                    ultimaMensagem.substring(0, 50) + '...' : 
+                    ultimaMensagem;
+            }
+        }
+
+        // Manipular indicador de digitação
+        function manipularDigitacao() {
+            // Mostrar indicador de digitação para outros usuários (simulado)
+            elementos.indicadorDigitacao.classList.add('ativa');
+            
+            // Limpar temporizador anterior
+            if (estado.temporizadorDigitacao) {
+                clearTimeout(estado.temporizadorDigitacao);
+            }
+            
+            // Esconder indicador após 2 segundos
+            estado.temporizadorDigitacao = setTimeout(() => {
+                elementos.indicadorDigitacao.classList.remove('ativa');
+            }, 2000);
+        }
+
+        // Iniciar temporizador do chat
+        function iniciarTemporizadorChat(minutosTempoDestruicao) {
+            // Se tempo de destruição for 0 (infinito), não iniciar temporizador
+            if (minutosTempoDestruicao === 0) {
+                elementos.temporizadorChat.textContent = 'Infinito';
+                elementos.barraQueima.style.width = '0%';
+                return;
+            }
+
+            // Definir expiração baseada no tempo especificado a partir de agora
+            estado.expiracaoChat = new Date(Date.now() + minutosTempoDestruicao * 60 * 1000);
+            atualizarDisplayTemporizadorChat();
+
+            // Atualizar a cada segundo
+            estado.temporizadorChat = setInterval(atualizarDisplayTemporizadorChat, 1000);
+        }
+
+        // Resetar temporizador do chat
+        function resetarTemporizadorChat() {
+            if (!estado.salaAtiva) return;
+            
+            const sala = estado.salas.find(s => s.id === estado.salaAtiva);
+            if (sala && sala.tempoAutoDestruicao > 0) {
+                // Resetar expiração baseada no tempo especificado a partir de agora
+                estado.expiracaoChat = new Date(Date.now() + sala.tempoAutoDestruicao * 60 * 1000);
+            }
+        }
+
+        // Atualizar display do temporizador do chat
+        function atualizarDisplayTemporizadorChat() {
+            if (!estado.expiracaoChat) return;
+
+            const agora = new Date();
+            const diferenca = estado.expiracaoChat - agora;
+
+            if (diferenca <= 0) {
+                // Temporizador expirado
+                elementos.temporizadorChat.textContent = '00:00:00';
+                elementos.barraQueima.style.width = '100%';
+                clearInterval(estado.temporizadorChat);
+
+                // Verificar se esta é uma sala fixa/oficial
+                const sala = estado.salas.find(s => s.id === estado.salaAtiva);
+                if (!sala || !sala.fixa) {
+                    // Remover sala expirada (apenas se não for fixa)
+                    estado.salas = estado.salas.filter(s => s.id !== estado.salaAtiva);
+                    delete estado.mensagens[estado.salaAtiva];
+
+                    // Remover de salasUsuario se foi criada por este usuário
+                    for (const usuario in estado.salasUsuario) {
+                        if (estado.salasUsuario[usuario] === estado.salaAtiva) {
+                            delete estado.salasUsuario[usuario];
+                            break;
+                        }
+                    }
+
+                    localStorage.setItem('burnBox_salas', JSON.stringify(estado.salas));
+                    localStorage.setItem('burnBox_mensagens', JSON.stringify(estado.mensagens));
+                    localStorage.setItem('burnBox_salasUsuario', JSON.stringify(estado.salasUsuario));
+
+                    estado.salaAtiva = null;
+
+                    alert('Esta sala expirou por inatividade e foi deletada. Retornando para a lista de salas.');
+                    mostrarListaSalas();
+                } else {
+                    // Para salas fixas, apenas alertar mas não deletar
+                    alert('Esta sala oficial expirou, mas permanece disponível.');
+                    mostrarListaSalas();
+                }
+                return;
+            }
+
+            // Calcular horas, minutos e segundos
+            const horas = Math.floor(diferenca / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            // Formatar como HH:MM:SS
+            elementos.temporizadorChat.textContent =
+                `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+
+            // Atualizar barra de queima (inversa - quanto menos tempo, mais cheia)
+            const sala = estado.salas.find(s => s.id === estado.salaAtiva);
+            if (sala && sala.tempoAutoDestruicao > 0) {
+                const tempoTotal = sala.tempoAutoDestruicao * 60 * 1000; // em milissegundos
+                const progresso = ((tempoTotal - diferenca) / tempoTotal) * 100;
+                elementos.barraQueima.style.width = `${Math.min(100, Math.max(0, progresso))}%`;
+            }
+        }
+
+        // Formatar tempo para display
+        function formatarTempo(stringISO) {
+            const data = new Date(stringISO);
+            return data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Rolar para o final do chat
+        function rolarParaBaixo() {
+            elementos.containerMensagens.scrollTop = elementos.containerMensagens.scrollHeight;
+        }
+
+        // Esconder todas as telas
+        function esconderTodasTelas() {
+            elementos.telaListaSalas.classList.remove('ativa');
+            elementos.telaChat.classList.remove('ativa');
+        }
+
+        // Atualizar contador online
+        function atualizarContadorOnline() {
+            elementos.contadorOnline.textContent = estado.usuariosOnline;
+        }
+
+        // Deletar sala atual (apenas para criador)
+        async function deletarSalaAtual() {
+            if (!estado.salaAtiva) return;
+
+            const sala = estado.salas.find(s => s.id === estado.salaAtiva);
+            if (!sala) return;
+
+            // Confirmar deleção
+            if (confirm(`Tem certeza que deseja deletar a sala "${sala.nome}"? Esta ação não pode ser desfeita.`)) {
+                try {
+                    const resposta = await fetch(`/api/salas/${estado.salaAtiva}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            criador: estado.apelido
+                        })
+                    });
+                    
+                    const dados = await resposta.json();
+                    
+                    if (dados.sucesso) {
+                        // Remover a sala
+                        estado.salas = estado.salas.filter(s => s.id !== estado.salaAtiva);
+                        delete estado.mensagens[estado.salaAtiva];
+
+                        // Remover de salasUsuario
+                        delete estado.salasUsuario[estado.apelido];
+
+                        localStorage.setItem('burnBox_salas', JSON.stringify(estado.salas));
+                        localStorage.setItem('burnBox_mensagens', JSON.stringify(estado.mensagens));
+                        localStorage.setItem('burnBox_salasUsuario', JSON.stringify(estado.salasUsuario));
+                        
+                        estado.salaAtiva = null;
+
+                        alert('Sala deletada com sucesso.');
+                        mostrarListaSalas();
+                    } else {
+                        alert('Erro ao deletar sala: ' + dados.erro);
+                    }
+                } catch (erro) {
+                    console.error('Erro ao deletar sala:', erro);
+                    alert('Erro ao deletar sala. Verifique sua conexão.');
+                }
+            }
+        }
+
+        // Formatar tempo de auto-destruição
+        function formatarTempoAutoDestruicao(minutos) {
+            if (minutos === 0) return 'infinito';
+            if (minutos < 1) return `${Math.round(minutos * 60)} segundos`;
+            if (minutos < 60) return `${minutos} minuto${minutos !== 1 ? 's' : ''}`;
+            if (minutos < 1440) return `${Math.round(minutos / 60)} hora${Math.round(minutos / 60) !== 1 ? 's' : ''}`;
+            return `${Math.round(minutos / 1440)} dia${Math.round(minutos / 1440) !== 1 ? 's' : ''}`;
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Garantir que a inicialização ocorra
+            setTimeout(() => {
+                inicializar();
+            }, 100);
         });
-        
-        // Abre o item atual se não estava ativo
-        if (!isActive) {
-          item.classList.add('active');
-          button.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-
-    // Smooth scroll para âncoras
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Adiciona indicadores de acessibilidade para elementos interativos
-    document.querySelectorAll('button, a').forEach(element => {
-      if (!element.hasAttribute('aria-label')) {
-        const text = element.textContent.trim();
-        if (text) {
-          element.setAttribute('aria-label', text);
-        }
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>

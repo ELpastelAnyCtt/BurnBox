@@ -1,0 +1,18 @@
+{
+  "name": "burnbox",
+  "version": "1.0.0",
+  "description": "BurnBox - Chat anônimo e seguro com mensagens autodestrutivas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.1"
+  },
+  "keywords": ["chat", "anonymous", "burning-messages"],
+  "author": "",
+  "license": "ISC"
+}
