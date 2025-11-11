@@ -1134,8 +1134,6 @@
         // Carregar dados do localStorage
         async function carregarDoArmazenamento() {
             const apelidoSalvo = localStorage.getItem('burnBox_apelido');
-            const salasSalvas = localStorage.getItem('burnBox_salas');
-            const mensagensSalvas = localStorage.getItem('burnBox_mensagens');
             const salasUsuarioSalvas = localStorage.getItem('burnBox_salasUsuario');
             
             // Gerar apelido aleatório se não existir
@@ -1319,6 +1317,9 @@
                     // Salvar que este usuário criou esta sala
                     estado.salasUsuario[estado.apelido] = dados.sala.id;
                     localStorage.setItem('burnBox_salasUsuario', JSON.stringify(estado.salasUsuario));
+
+                    // Adicionar a nova sala à lista de salas
+                    estado.salas.push(dados.sala);
 
                     esconderModal(elementos.modalCriarSala);
                     await mostrarListaSalas();
